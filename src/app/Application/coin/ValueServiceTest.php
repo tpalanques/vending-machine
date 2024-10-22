@@ -5,9 +5,9 @@ namespace app\Application\coin;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class SupportedTest extends TestCase {
+class ValueServiceTest extends TestCase {
 
-    private Supported $sut;
+    private ValueService $sut;
 
     public function __construct(string $name) {
         parent::__construct($name);
@@ -15,24 +15,24 @@ class SupportedTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
-        $this->sut = new Supported();
+        $this->sut = new ValueService();
     }
 
-    #[DataProvider('supportedValue')]
+    #[DataProvider('supported')]
     public function testSupportedValue(float $value): void {
         $this->assertTrue($this->sut->isSupported($value));
     }
 
-    #[DataProvider('unsupportedValue')]
-    public function testNonSupported(float $supported): void {
+    #[DataProvider('unsupported')]
+    public function testNonSupportedValue(float $supported): void {
         $this->assertFalse($this->sut->isSupported($supported));
     }
 
-    public static function supportedValue(): array {
+    public static function supported(): array {
         return [[0.05], [0.10], [0.25], [1]];
     }
 
-    public static function unsupportedValue(): array {
+    public static function unsupported(): array {
         return [[0], [0.01], [0.15], [0.30], [0.50]];
     }
 }
