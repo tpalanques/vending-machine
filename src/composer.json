@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "app\\": "app/holded-vending-machine"
+            "app\\": "app"
         }
     },
     "config": {
