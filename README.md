@@ -1,7 +1,6 @@
-# 0. Vending Machine for Holded
+# 0. Vending Machine
 
-Senior developer test for Holded based on the following exercise:
-https://github.com/holdedhub/careers/tree/main/challenges/backend
+Senior developer test for some customer
 
 # 1. Scripts
 

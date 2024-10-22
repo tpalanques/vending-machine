@@ -6,27 +6,27 @@ version: '3.3'
 services:
   php:
     build: './system/docker/php'
-    container_name: holded_php
+    container_name: vm_php
     depends_on:
       - mariadb
     networks:
       - backend
     environment:
-      MYSQL_USER: phpsandbox
+      MYSQL_USER: vending-machine
       MYSQL_PASSWORD: nhIniHsb8gTHyj1
-      MYSQL_HOST: holded_mariadb
+      MYSQL_HOST: vm_mariadb
     restart: always
     volumes:
       - ./src/:/var/www/html
   composer:
-    container_name: holded_vendor
+    container_name: vm_vendor
     image: composer:latest
     command: [ "composer", "install" ]
     volumes:
       - ./src:/app
   mariadb:
     build: './system/docker/mariadb'
-    container_name: holded_mariadb
+    container_name: vm_mariadb
     networks:
       - backend
     environment:
@@ -41,7 +41,7 @@ services:
       - ./storage/database/:/var/lib/mysql/
   apache:
     build: './system/docker/apache'
-    container_name: holded_apache
+    container_name: vm_apache
     depends_on:
       - php
       - mariadb
