@@ -1,0 +1,59 @@
+#
+# Builds and runs all docker containers to start a new VM
+# @file docker-compose.yml
+
+version: '3.3'
+services:
+  php:
+    build: './system/docker/php'
+    container_name: holded_php
+    depends_on:
+      - mariadb
+    networks:
+      - backend
+    environment:
+      MYSQL_USER: phpsandbox
+      MYSQL_PASSWORD: nhIniHsb8gTHyj1
+      MYSQL_HOST: holded_mariadb
+    restart: always
+    volumes:
+      - ./src/:/var/www/html
+  composer:
+    container_name: holded_vendor
+    image: composer:latest
+    command: [ "composer", "install" ]
+    volumes:
+      - ./src:/app
+  mariadb:
+    build: './system/docker/mariadb'
+    container_name: holded_mariadb
+    networks:
+      - backend
+    environment:
+      MYSQL_ROOT_PASSWORD: G5Zepj68krLgL16dXVkZSyP9De6W36iRk2Eaqfxpi44ZoO7K13vuPK5Gnkm
+      MYSQL_ALLOW_EMPTY_PASSWORD: 0
+      MYSQL_RANDOM_ROOT_PASSWORD: 0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./storage/database/:/var/lib/mysql/
+  apache:
+    build: './system/docker/apache'
+    container_name: holded_apache
+    depends_on:
+      - php
+      - mariadb
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+    restart: always
+    volumes:
+      - ./src/:/usr/local/apache2/htdocs
+networks:
+  backend:
+  frontend:
