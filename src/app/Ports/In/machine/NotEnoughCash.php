@@ -9,7 +9,7 @@ use Exception;
 class NotEnoughCash extends Exception {
     public function __construct(iProduct $product, iCoinSet $coins) {
         parent::__construct(
-            $coins->getValue() . " coins can't buy " . $product->getName() . " with price " . $product->getPrice()
+            $coins->getValue() . " coins can't buy " . $product->getName() . ". It's price is " . $product->getPrice() . " coins"
         );
     }
 }
