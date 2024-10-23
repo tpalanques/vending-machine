@@ -18,19 +18,19 @@ class Factory {
         return new Coin($this->valueService, $value);
     }
 
-    public function createFiveCent(): iCoin {
+    public function getFiveCent(): iCoin {
         return $this->create($this->valueService->getFiveCent());
     }
 
-    public function createTenCent(): iCoin {
+    public function getTenCent(): iCoin {
         return $this->create($this->valueService->getTenCent());
     }
 
-    public function createQuarter(): iCoin {
+    public function getQuarter(): iCoin {
         return $this->create($this->valueService->getQuarter());
     }
 
-    public function createOne(): iCoin {
+    public function getOne(): iCoin {
         return $this->create($this->valueService->getOne());
     }
 }
