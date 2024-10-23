@@ -43,7 +43,7 @@ You can update the composer dependencies by running:
 ```shell
 . docker.sh composerUpdate  
 ```
-Note this will create or update your json.lock file
+Note this will get or update your json.lock file
 
 ## 1.4 Run test suite
 
