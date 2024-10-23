@@ -8,6 +8,10 @@ use app\Ports\In\coin\Set as iSet;
 class Set implements iSet {
     private array $coins = [];
 
+    public function __construct() {
+        $this->empty();
+    }
+
     public function add(iCoin $coin): void {
         $this->coins[] = $coin;
     }
@@ -28,5 +32,9 @@ class Set implements iSet {
             $totalValue += round($coin->getValue(), $coin->getPrecision());
         }
         return round($totalValue, Coin::getPrecision());
+    }
+
+    public function empty(): void {
+        $this->coins = [];
     }
 }

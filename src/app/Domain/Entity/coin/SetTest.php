@@ -136,4 +136,58 @@ class SetTest extends TestCase {
         ];
     }
 
+    #[DataProvider('setToEmpty')]
+    public function testEmpty(Set $sut) {
+        $sut->empty();
+        $this->assertEquals(0, $this->sut->getValue());
+    }
+
+    public static function setToEmpty(): array {
+        $coinFactory = new CoinFactory();
+        $setFactory = new SetFactory();
+        $fiveCent = $coinFactory->getFiveCent();
+        $tenCent = $coinFactory->getTenCent();
+        $quarter = $coinFactory->getQuarter();
+        $one = $coinFactory->getOne();
+        return [
+            [$setFactory->create($fiveCent, $fiveCent)],
+            [$setFactory->create($fiveCent, $tenCent)],
+            [$setFactory->create($tenCent, $tenCent)],
+            [$setFactory->create($tenCent, $tenCent, $fiveCent)],
+            [$setFactory->create($tenCent, $tenCent, $tenCent)],
+            [$setFactory->create($quarter, $tenCent)],
+            [$setFactory->create($quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($quarter, $tenCent, $tenCent)],
+            [$setFactory->create($quarter, $quarter)],
+            [$setFactory->create($quarter, $quarter, $fiveCent)],
+            [$setFactory->create($quarter, $quarter, $tenCent)],
+            [$setFactory->create($quarter, $quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($quarter, $quarter, $tenCent, $tenCent)],
+            [$setFactory->create($quarter, $quarter, $quarter)],
+            [$setFactory->create($quarter, $quarter, $quarter, $fiveCent)],
+            [$setFactory->create($quarter, $quarter, $quarter, $tenCent)],
+            [$setFactory->create($quarter, $quarter, $quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($quarter, $quarter, $quarter, $tenCent, $tenCent)],
+            [$setFactory->create($one, $tenCent)],
+            [$setFactory->create($one, $tenCent, $fiveCent)],
+            [$setFactory->create($one, $tenCent, $tenCent)],
+            [$setFactory->create($one, $quarter)],
+            [$setFactory->create($one, $quarter, $fiveCent)],
+            [$setFactory->create($one, $quarter, $tenCent)],
+            [$setFactory->create($one, $quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($one, $quarter, $tenCent, $tenCent)],
+            [$setFactory->create($one, $quarter, $quarter)],
+            [$setFactory->create($one, $quarter, $quarter, $fiveCent)],
+            [$setFactory->create($one, $quarter, $quarter, $tenCent)],
+            [$setFactory->create($one, $quarter, $quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($one, $quarter, $quarter, $tenCent, $tenCent)],
+            [$setFactory->create($one, $quarter, $quarter, $quarter)],
+            [$setFactory->create($one, $quarter, $quarter, $quarter, $fiveCent)],
+            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent)],
+            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent, $fiveCent)],
+            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent, $tenCent)],
+            [$setFactory->create($one, $one)],
+        ];
+    }
+
 }

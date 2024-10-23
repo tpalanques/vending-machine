@@ -11,4 +11,6 @@ interface Set {
 
     public function getValue(): float;
 
+    public function empty(): void;
+
 }

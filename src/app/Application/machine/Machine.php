@@ -50,6 +50,7 @@ class Machine {
                 $this->insertedCoinSet->add($this->coinFactory->getOne());
                 return;
             case "0":
+                $this->insertedCoinSet->refund();
                 exit;
             default:
                 echo "Invalid option" . PHP_EOL;
