@@ -32,6 +32,9 @@ class View {
             "\t 2) Insert 0.10 coin" . PHP_EOL .
             "\t 3) Insert 0.25 coin" . PHP_EOL .
             "\t 4) Insert 1 coin" . PHP_EOL .
+            "\t 5) Buy Juice" . PHP_EOL .
+            "\t 6) Buy Soda" . PHP_EOL .
+            "\t 7) Buy Water" . PHP_EOL .
             "\t 0) Leave" . PHP_EOL;
     }
 }

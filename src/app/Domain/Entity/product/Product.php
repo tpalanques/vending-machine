@@ -2,8 +2,8 @@
 
 namespace app\Domain\Entity\product;
 
-use app\Domain\Entity\coin\Coin;
 use app\Ports\In\product\Product as iProduct;
+use app\Config;
 
 class Product implements iProduct {
 
@@ -12,7 +12,7 @@ class Product implements iProduct {
 
     public function __construct(string $name, float $price) {
         $this->name = $name;
-        $this->price = round($price, Coin::getPrecision());
+        $this->price = round($price, $this->getPrecision());
     }
 
     public function getName(): string {
@@ -20,6 +20,10 @@ class Product implements iProduct {
     }
 
     public function getPrice(): float {
-        return round($this->price, Coin::getPrecision());
+        return round($this->price, $this->getPrecision());
+    }
+
+    private function getPrecision(): int {
+        return Config::COIN_PRECISION;
     }
 }
