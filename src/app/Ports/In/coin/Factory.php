@@ -14,23 +14,23 @@ class Factory {
         $this->valueService = (new ValueServiceFactory())->get();
     }
 
-    private function create(float $value): iCoin {
+    private function get(float $value): iCoin {
         return new Coin($this->valueService, $value);
     }
 
     public function getFiveCent(): iCoin {
-        return $this->create($this->valueService->getFiveCent());
+        return $this->get($this->valueService->getFiveCent());
     }
 
     public function getTenCent(): iCoin {
-        return $this->create($this->valueService->getTenCent());
+        return $this->get($this->valueService->getTenCent());
     }
 
     public function getQuarter(): iCoin {
-        return $this->create($this->valueService->getQuarter());
+        return $this->get($this->valueService->getQuarter());
     }
 
     public function getOne(): iCoin {
-        return $this->create($this->valueService->getOne());
+        return $this->get($this->valueService->getOne());
     }
 }
