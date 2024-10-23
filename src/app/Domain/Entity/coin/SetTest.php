@@ -11,11 +11,13 @@ use TypeError;
 
 class SetTest extends TestCase {
 
+    private SetFactory $setFactory;
     private Set $sut;
 
     protected function setUp(): void {
         parent::setUp();
-        $this->sut = (new SetFactory())->createEmpty();
+        $this->setFactory = new SetFactory();
+        $this->sut = $this->setFactory->createEmpty();
     }
 
     #[DataProvider('singleCoinsAdded')]
@@ -137,56 +139,59 @@ class SetTest extends TestCase {
     }
 
     #[DataProvider('setToEmpty')]
-    public function testEmpty(Set $sut) {
-        $sut->empty();
+    public function testEmpty(iCoin $coins): void {
+        $sut = $this->setFactory->create($coins);
+        $initialValue = $sut->getValue();
+        $refundedCoins = $sut->empty();
+        $refundedCoinSet = $this->setFactory->create(...$refundedCoins);
         $this->assertEquals(0, $this->sut->getValue());
+        $this->assertEquals($initialValue, $refundedCoinSet->getValue());
     }
 
     public static function setToEmpty(): array {
         $coinFactory = new CoinFactory();
-        $setFactory = new SetFactory();
         $fiveCent = $coinFactory->getFiveCent();
         $tenCent = $coinFactory->getTenCent();
         $quarter = $coinFactory->getQuarter();
         $one = $coinFactory->getOne();
         return [
-            [$setFactory->create($fiveCent, $fiveCent)],
-            [$setFactory->create($fiveCent, $tenCent)],
-            [$setFactory->create($tenCent, $tenCent)],
-            [$setFactory->create($tenCent, $tenCent, $fiveCent)],
-            [$setFactory->create($tenCent, $tenCent, $tenCent)],
-            [$setFactory->create($quarter, $tenCent)],
-            [$setFactory->create($quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($quarter, $tenCent, $tenCent)],
-            [$setFactory->create($quarter, $quarter)],
-            [$setFactory->create($quarter, $quarter, $fiveCent)],
-            [$setFactory->create($quarter, $quarter, $tenCent)],
-            [$setFactory->create($quarter, $quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($quarter, $quarter, $tenCent, $tenCent)],
-            [$setFactory->create($quarter, $quarter, $quarter)],
-            [$setFactory->create($quarter, $quarter, $quarter, $fiveCent)],
-            [$setFactory->create($quarter, $quarter, $quarter, $tenCent)],
-            [$setFactory->create($quarter, $quarter, $quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($quarter, $quarter, $quarter, $tenCent, $tenCent)],
-            [$setFactory->create($one, $tenCent)],
-            [$setFactory->create($one, $tenCent, $fiveCent)],
-            [$setFactory->create($one, $tenCent, $tenCent)],
-            [$setFactory->create($one, $quarter)],
-            [$setFactory->create($one, $quarter, $fiveCent)],
-            [$setFactory->create($one, $quarter, $tenCent)],
-            [$setFactory->create($one, $quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($one, $quarter, $tenCent, $tenCent)],
-            [$setFactory->create($one, $quarter, $quarter)],
-            [$setFactory->create($one, $quarter, $quarter, $fiveCent)],
-            [$setFactory->create($one, $quarter, $quarter, $tenCent)],
-            [$setFactory->create($one, $quarter, $quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($one, $quarter, $quarter, $tenCent, $tenCent)],
-            [$setFactory->create($one, $quarter, $quarter, $quarter)],
-            [$setFactory->create($one, $quarter, $quarter, $quarter, $fiveCent)],
-            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent)],
-            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent, $fiveCent)],
-            [$setFactory->create($one, $quarter, $quarter, $quarter, $tenCent, $tenCent)],
-            [$setFactory->create($one, $one)],
+            [$fiveCent, $fiveCent],
+            [$fiveCent, $tenCent],
+            [$tenCent, $tenCent],
+            [$tenCent, $tenCent, $fiveCent],
+            [$tenCent, $tenCent, $tenCent],
+            [$quarter, $tenCent],
+            [$quarter, $tenCent, $fiveCent],
+            [$quarter, $tenCent, $tenCent],
+            [$quarter, $quarter],
+            [$quarter, $quarter, $fiveCent],
+            [$quarter, $quarter, $tenCent],
+            [$quarter, $quarter, $tenCent, $fiveCent],
+            [$quarter, $quarter, $tenCent, $tenCent],
+            [$quarter, $quarter, $quarter],
+            [$quarter, $quarter, $quarter, $fiveCent],
+            [$quarter, $quarter, $quarter, $tenCent],
+            [$quarter, $quarter, $quarter, $tenCent, $fiveCent],
+            [$quarter, $quarter, $quarter, $tenCent, $tenCent],
+            [$one, $tenCent],
+            [$one, $tenCent, $fiveCent],
+            [$one, $tenCent, $tenCent],
+            [$one, $quarter],
+            [$one, $quarter, $fiveCent],
+            [$one, $quarter, $tenCent],
+            [$one, $quarter, $tenCent, $fiveCent],
+            [$one, $quarter, $tenCent, $tenCent],
+            [$one, $quarter, $quarter],
+            [$one, $quarter, $quarter, $fiveCent],
+            [$one, $quarter, $quarter, $tenCent],
+            [$one, $quarter, $quarter, $tenCent, $fiveCent],
+            [$one, $quarter, $quarter, $tenCent, $tenCent],
+            [$one, $quarter, $quarter, $quarter],
+            [$one, $quarter, $quarter, $quarter, $fiveCent],
+            [$one, $quarter, $quarter, $quarter, $tenCent],
+            [$one, $quarter, $quarter, $quarter, $tenCent, $fiveCent],
+            [$one, $quarter, $quarter, $quarter, $tenCent, $tenCent],
+            [$one, $one],
         ];
     }
 
