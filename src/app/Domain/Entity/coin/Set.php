@@ -1,12 +1,11 @@
 <?php
 
-namespace app\Application\coin;
+namespace app\Domain\Entity\coin;
 
-use app\Domain\Entity\coin\Coin;
 use app\Ports\In\coin\Coin as iCoin;
 use app\Ports\In\coin\Set as iSet;
 
-class SetService implements iSet {
+class Set implements iSet {
     private array $coins = [];
 
     public function add(iCoin $coin): void {
