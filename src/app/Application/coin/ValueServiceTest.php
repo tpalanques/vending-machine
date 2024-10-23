@@ -9,10 +9,6 @@ class ValueServiceTest extends TestCase {
 
     private ValueService $sut;
 
-    public function __construct(string $name) {
-        parent::__construct($name);
-    }
-
     protected function setUp(): void {
         parent::setUp();
         $this->sut = new ValueService();
