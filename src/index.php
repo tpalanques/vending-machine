@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 require __DIR__ . '/vendor/autoload.php';
 
 class index {
@@ -8,9 +9,9 @@ class index {
     }
 
     public function run(): void {
-        new \app\application\main();
+        $machine = new \app\Application\machine\Machine();
+        $machine->run();
     }
 }
 
-//$app = new index();
-echo "<h1> Hello world!</h1>";
+$app = new index();

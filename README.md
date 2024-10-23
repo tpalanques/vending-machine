@@ -68,4 +68,11 @@ The `storage` folder contains persistent data and shouldn't be deleted unless yo
 ## 2.3 Src
 The `src` folder contains the working code (including tests) to run the project
 
+# 3. Running the machine
+To get the machine working you'll need to build the docker machine previously (see point 1). Once the
+machine is built you can run the script:
 
+```shell
+. run.sh
+
+```
