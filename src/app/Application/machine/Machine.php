@@ -50,10 +50,13 @@ class Machine {
                 $this->insertedCoinSet->add($this->coinFactory->getOne());
                 return;
             case "0":
+                $refundedCoins = $this->insertedCoinSet->empty();
+                foreach ($refundedCoins as $coin) {
+                    echo "Here's your: " . $coin->getValue() . " coin" . PHP_EOL;
+                }
                 exit;
             default:
                 echo "Invalid option" . PHP_EOL;
-                break;
         }
     }
 }

@@ -11,4 +11,9 @@ interface Set {
 
     public function getValue(): float;
 
+    /**
+     * @return iCoin[]
+     */
+    public function empty(): array;
+
 }

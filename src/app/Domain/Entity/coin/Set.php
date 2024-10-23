@@ -29,4 +29,10 @@ class Set implements iSet {
         }
         return round($totalValue, Coin::getPrecision());
     }
+
+    public function empty(): array {
+        $coins = $this->coins;
+        $this->coins = [];
+        return $coins;
+    }
 }
