@@ -2,6 +2,7 @@
 
 namespace app\Application\change;
 
+use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\change\NotEnoughCash;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
@@ -20,7 +21,7 @@ class KeepAllTest extends TestCase {
         parent::setUp();
         $this->coinSetFactory = new CoinSetFactory();
         $this->coinFactory = new CoinFactory();
-        $this->sut = new KeepAll();
+        $this->sut = (new ChangeFactory())->getKeepAll();
     }
 
     public function testGetChange(): void {
