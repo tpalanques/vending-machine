@@ -8,6 +8,7 @@ setEnvironment
 
 function start() {
   cd $ROOT_PATH
+  sudo service docker start
   sudo docker-compose up --detach --force-recreate --remove-orphans --always-recreate-deps --build
   sudo docker-compose logs php
   cdOriginalPath
@@ -31,6 +32,7 @@ function composerUpdate() {
 function stop() {
   cd $ROOT_PATH
   sudo docker-compose down
+  sudo service docker stop
   cdOriginalPath
 }
 
