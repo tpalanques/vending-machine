@@ -9,8 +9,10 @@ use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\NotEnoughCash;
-use app\Ports\In\product\Product as iProduct;
 use app\Ports\In\product\Factory as ProductFactory;
+use app\Ports\In\product\Product as iProduct;
+use app\Ports\In\product\SingleTypedSet as iSingleTypedSet;
+use app\Ports\In\product\SetFactory as ProductSetFactory;
 use app\UI\machine\View;
 
 class Machine {
@@ -18,24 +20,33 @@ class Machine {
     private iBuyService $buyService;
     private CoinFactory $coinFactory;
     private CoinSet $insertedCoinSet;
+    private iSingleTypedSet $juiceSet;
+    private iSingleTypedSet $sodaSet;
+    private iSingleTypedSet $waterSet;
     private ProductFactory $productFactory;
 
     public function __construct() {
         $this->buyService = $this->getBuyService();
         $this->coinFactory = new CoinFactory();
         $this->insertedCoinSet = (new CoinSetFactory())->createEmpty();
+        $this->buildProductSets();
         $this->productFactory = new ProductFactory();
     }
 
     public function run(): void {
         while (true) {
-            echo $this->getView($this->insertedCoinSet)->render();
+            echo $this->getView()->render();
             $this->processAnswer($this->getAnswer());
         }
     }
 
-    public function getView(CoinSet $insertedCoinSet): View {
-        return new View($insertedCoinSet);
+    public function getView(): View {
+        return new View(
+            $this->insertedCoinSet,
+            $this->juiceSet,
+            $this->sodaSet,
+            $this->waterSet
+        );
     }
 
     private function getAnswer(): string {
@@ -92,5 +103,13 @@ class Machine {
         $changeStrategy = $changeStrategyFactory->getKeepAll();
         $buyServiceFactory = new BuyServiceFactory($changeStrategy);
         return $buyServiceFactory->get();
+    }
+
+    private function buildProductSets(): void {
+        $productSetFactory = new ProductSetFactory();
+        $productFactory = new ProductFactory();
+        $this->juiceSet = $productSetFactory->createSingleTyped($productFactory->getJuice());
+        $this->sodaSet = $productSetFactory->createSingleTyped($productFactory->getSoda());
+        $this->waterSet = $productSetFactory->createSingleTyped($productFactory->getWater());
     }
 }
