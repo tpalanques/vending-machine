@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Domain\Entity\product;
+namespace app\Domain\Entity\product\set;
 
 use app\Ports\In\product\Product as iProduct;
 use app\Ports\In\product\Set as iSet;
@@ -20,5 +20,9 @@ class Set implements iSet {
             }
         }
         array_splice($this->product, $index, 1);
+    }
+
+    public function getProducts(): array {
+        return $this->product;
     }
 }
