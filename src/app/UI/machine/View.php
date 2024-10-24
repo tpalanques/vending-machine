@@ -3,16 +3,16 @@
 namespace app\UI\machine;
 
 use app\Ports\In\coin\Set as CoinSet;
-use app\Ports\In\product\SingleTypedSet as iProductSet;
+use app\Ports\In\stock\Stock;
 
 class View {
 
     private CoinSet $insertedCoinSet;
-    private iProductSet $juice;
-    private iProductSet $soda;
-    private iProductSet $water;
+    private Stock $juice;
+    private Stock $soda;
+    private Stock $water;
 
-    public function __construct(CoinSet $insertedCoinSet, iProductSet $juice, iProductSet $soda, iProductSet $water) {
+    public function __construct(CoinSet $insertedCoinSet, Stock $juice, Stock $soda, Stock $water) {
         $this->insertedCoinSet = $insertedCoinSet;
         $this->juice = $juice;
         $this->soda = $soda;
@@ -45,7 +45,7 @@ class View {
             "\t 0) Leave" . PHP_EOL;
     }
 
-    private function getUnitsLeft(iProductSet $product): string {
-        return " ( " . $product->count() . " units left )";
+    private function getUnitsLeft(Stock $stock): string {
+        return " ( " . $stock->get() . " units left )";
     }
 }
