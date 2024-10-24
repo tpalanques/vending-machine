@@ -11,15 +11,20 @@ use PHPUnit\Framework\TestCase;
 class SingleTypedTest extends TestCase {
 
     private iSingleTypedSet $sut;
+    private ProductFactory $productFactory;
 
     protected function setUp(): void {
         parent::setUp();
-        $productFactory = new ProductFactory();
-        $this->sut = (new SetFactory())->createSingleTyped($productFactory->getJuice());
+        $this->productFactory = new ProductFactory();
+        $this->sut = (new SetFactory())->createSingleTyped($this->productFactory->getJuice());
     }
 
     public function testCountWhenEmpty() {
         $this->assertEquals(0, $this->sut->count());
+    }
+
+    public function testGet() {
+        $this->assertEquals($this->productFactory->getJuice(), $this->sut->getProduct());
     }
 
     public function testAdd() {

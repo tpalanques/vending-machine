@@ -9,19 +9,23 @@ use app\Ports\In\product\SingleTypedSet as iSingleSet;
 class SingleTypedTyped implements iSingleSet {
 
     private iSet $set;
-    private iProduct $productType;
+    private iProduct $product;
 
     public function __construct(iSet $set, iProduct $product) {
         $this->set = $set;
-        $this->productType = $product;
+        $this->product = $product;
+    }
+
+    public function getProduct(): iProduct {
+        return $this->product;
     }
 
     public function add(): void {
-        $this->set->add($this->productType);
+        $this->set->add($this->product);
     }
 
     public function remove(): void {
-        $this->set->remove($this->productType);
+        $this->set->remove($this->product);
     }
 
     public function count(): int {
