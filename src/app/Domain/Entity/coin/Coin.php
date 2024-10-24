@@ -5,6 +5,7 @@ namespace app\Domain\Entity\coin;
 use app\Application\coin\ValueService;
 use app\Ports\In\coin\Coin as iCoin;
 use app\Ports\In\coin\UnsupportedValue;
+use app\Config;
 
 class Coin implements iCoin {
 
@@ -16,14 +17,14 @@ class Coin implements iCoin {
         if (!$valueService->isSupported($value)) {
             throw new UnsupportedValue($value);
         }
-        $this->value = round($value, self::getPrecision());
+        $this->value = round($value, $this->getPrecision());
     }
 
     public function getValue(): float {
-        return round($this->value, self::getPrecision());
+        return round($this->value, $this->getPrecision());
     }
 
-    public static function getPrecision(): int {
-        return self::PRECISION;
+    private function getPrecision(): int {
+        return Config::COIN_PRECISION;
     }
 }
