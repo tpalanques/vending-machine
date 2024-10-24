@@ -9,6 +9,8 @@ interface SingleTypedSet {
 
     public function __construct(iSet $set, iProduct $product);
 
+    public function getProduct(): iProduct;
+
     public function add(): void;
 
     public function remove(): void;
