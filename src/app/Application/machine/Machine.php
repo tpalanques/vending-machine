@@ -11,18 +11,22 @@ use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\NotEnoughCash;
 use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\In\product\Product as iProduct;
-use app\Ports\In\product\SingleTypedSet as iSingleTypedSet;
+use app\Ports\In\product\SingleTypedSet as Stock;
 use app\Ports\In\product\SetFactory as ProductSetFactory;
 use app\UI\machine\View;
 
 class Machine {
 
+    private const int JUICE_STARTING_STOCK = 3;
+    private const int SODA_STARTING_STOCK = 5;
+    private const int WATER_STARTING_STOCK = 1;
+
     private iBuyService $buyService;
     private CoinFactory $coinFactory;
     private CoinSet $insertedCoinSet;
-    private iSingleTypedSet $juiceSet;
-    private iSingleTypedSet $sodaSet;
-    private iSingleTypedSet $waterSet;
+    private Stock $juice;
+    private Stock $soda;
+    private Stock $water;
     private ProductFactory $productFactory;
 
     public function __construct() {
@@ -30,6 +34,7 @@ class Machine {
         $this->coinFactory = new CoinFactory();
         $this->insertedCoinSet = (new CoinSetFactory())->createEmpty();
         $this->buildProductSets();
+        $this->addProductStocks();
         $this->productFactory = new ProductFactory();
     }
 
@@ -43,9 +48,9 @@ class Machine {
     public function getView(): View {
         return new View(
             $this->insertedCoinSet,
-            $this->juiceSet,
-            $this->sodaSet,
-            $this->waterSet
+            $this->juice,
+            $this->soda,
+            $this->water
         );
     }
 
@@ -108,8 +113,20 @@ class Machine {
     private function buildProductSets(): void {
         $productSetFactory = new ProductSetFactory();
         $productFactory = new ProductFactory();
-        $this->juiceSet = $productSetFactory->createSingleTyped($productFactory->getJuice());
-        $this->sodaSet = $productSetFactory->createSingleTyped($productFactory->getSoda());
-        $this->waterSet = $productSetFactory->createSingleTyped($productFactory->getWater());
+        $this->juice = $productSetFactory->createSingleTyped($productFactory->getJuice());
+        $this->soda = $productSetFactory->createSingleTyped($productFactory->getSoda());
+        $this->water = $productSetFactory->createSingleTyped($productFactory->getWater());
+    }
+
+    private function addProductStocks(): void {
+        $this->addProductStock($this->juice, self::JUICE_STARTING_STOCK);
+        $this->addProductStock($this->soda, self::SODA_STARTING_STOCK);
+        $this->addProductStock($this->water, self::WATER_STARTING_STOCK);
+    }
+
+    private function addProductStock(Stock $product, int $amount): void {
+        for ($i = 0; $i < $amount; $i++) {
+            $product->add();
+        }
     }
 }
