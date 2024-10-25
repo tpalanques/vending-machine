@@ -42,8 +42,7 @@ class Main implements iProcessor {
         $this->buyService = $buyService;
     }
 
-    public
-    function process(): void {
+    public function process(): void {
         switch ($this->input->get()) {
             case "1":
                 $this->insertedCoinSet->add($this->coinFactory->getFiveCent());
@@ -81,8 +80,8 @@ class Main implements iProcessor {
 
     private function buy(iStock $stock): void {
         try {
-            $stock->remove(self::AMOUNT);
             $this->buyService->buy($stock->getProduct(), $this->insertedCoinSet);
+            $stock->remove(self::AMOUNT);
         } catch (NotEnoughCash|InsufficientStock $exception) {
             echo $exception->getMessage() . PHP_EOL;
         }
