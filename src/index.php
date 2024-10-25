@@ -20,7 +20,7 @@ class index {
             $dependencyBuilder->getProductFactory(),
             $dependencyBuilder->getInsertedCoinSet(),
             $dependencyBuilder->getStockFactory(),
-            $dependencyBuilder->getViewFactory()
+            $dependencyBuilder->getInteractiveViewFactory()
         );
         $machine->run();
     }

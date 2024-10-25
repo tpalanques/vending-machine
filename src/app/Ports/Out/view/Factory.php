@@ -8,6 +8,7 @@ use app\UI\machine\Main;
 use app\Ports\Out\view\Console as iConsole;
 
 class Factory {
+
     public function getMain(CoinSet $insertedCoinSet, Stock $juice, Stock $soda, Stock $water): iConsole {
         return new Main($insertedCoinSet, $juice, $soda, $water);
     }
