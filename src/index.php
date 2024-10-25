@@ -1,5 +1,8 @@
 <?php declare(strict_types=1);
 
+use app\DependencyBuilder;
+use app\Application\machine\Machine;
+
 require __DIR__ . '/vendor/autoload.php';
 
 class index {
@@ -9,7 +12,16 @@ class index {
     }
 
     public function run(): void {
-        $machine = new \app\Application\machine\Machine();
+        $dependencyBuilder = new DependencyBuilder();
+        $machine = new Machine(
+            $dependencyBuilder->getBuyService(),
+            $dependencyBuilder->getCoinFactory(),
+            $dependencyBuilder->getInput(),
+            $dependencyBuilder->getProductFactory(),
+            $dependencyBuilder->getInsertedCoinSet(),
+            $dependencyBuilder->getStockFactory(),
+            $dependencyBuilder->getViewFactory()
+        );
         $machine->run();
     }
 }

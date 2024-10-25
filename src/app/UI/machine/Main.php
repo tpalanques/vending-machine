@@ -4,8 +4,9 @@ namespace app\UI\machine;
 
 use app\Ports\In\coin\Set as CoinSet;
 use app\Ports\In\stock\Stock;
+use app\Ports\Out\view\Console as iConsoleView;
 
-class View {
+class Main implements iConsoleView {
 
     private CoinSet $insertedCoinSet;
     private Stock $juice;
