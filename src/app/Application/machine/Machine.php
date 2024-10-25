@@ -10,11 +10,12 @@ use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\NotEnoughCash;
 use app\Ports\In\product\Factory as ProductFactory;
-use app\Ports\In\product\Product as iProduct;
 use app\Ports\In\stock\InsufficientStock;
 use app\Ports\In\stock\Stock as iStock;
 use app\Ports\In\product\SetFactory as ProductSetFactory;
 use app\Ports\In\stock\Factory as StockFactory;
+use app\Ports\Out\Input as iInput;
+use app\Ports\Out\InputFactory;
 use app\UI\machine\View;
 
 class Machine {
@@ -27,6 +28,7 @@ class Machine {
     private iBuyService $buyService;
     private CoinFactory $coinFactory;
     private CoinSet $insertedCoinSet;
+    private iInput $input;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
@@ -35,6 +37,7 @@ class Machine {
     public function __construct() {
         $this->buyService = $this->getBuyService();
         $this->coinFactory = new CoinFactory();
+        $this->input = (new InputFactory())->getKeyboardString();
         $this->productFactory = new ProductFactory();
         $this->insertedCoinSet = (new CoinSetFactory())->createEmpty();
         $this->buildProductStocks(new StockFactory(new ProductSetFactory()), $this->productFactory);
@@ -44,28 +47,16 @@ class Machine {
     public function run(): void {
         while (true) {
             echo $this->getView()->render();
-            $this->processAnswer($this->getAnswer());
+            $this->processInput($this->input);
         }
     }
 
     public function getView(): View {
-        return new View(
-            $this->insertedCoinSet,
-            $this->juice,
-            $this->soda,
-            $this->water
-        );
+        return new View($this->insertedCoinSet, $this->juice, $this->soda, $this->water);
     }
 
-    private function getAnswer(): string {
-        $handle = fopen("php://stdin", "r");
-        $line = fgets($handle);
-        fclose($handle);
-        return $line;
-    }
-
-    private function processAnswer(string $answer): void {
-        switch ($answer) {
+    private function processInput(iInput $input): void {
+        switch ($input->get()) {
             case "1":
                 $this->insertedCoinSet->add($this->coinFactory->getFiveCent());
                 return;
