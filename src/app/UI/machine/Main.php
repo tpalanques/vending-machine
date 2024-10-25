@@ -43,6 +43,7 @@ class Main implements iConsoleView {
             "\t 5) Buy Juice" . $this->getUnitsLeft($this->juice) . PHP_EOL .
             "\t 6) Buy Soda" . $this->getUnitsLeft($this->soda) . PHP_EOL .
             "\t 7) Buy Water" . $this->getUnitsLeft($this->water) . PHP_EOL .
+            "\t 8) Enter ADMIN mode" . PHP_EOL .
             "\t 0) Leave" . PHP_EOL;
     }
 
