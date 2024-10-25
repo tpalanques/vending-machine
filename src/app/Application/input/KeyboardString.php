@@ -2,7 +2,7 @@
 
 namespace app\Application\input;
 
-use app\Ports\Out\Input as iInput;
+use app\Ports\Out\input\Input as iInput;
 
 class KeyboardString implements iInput {
 

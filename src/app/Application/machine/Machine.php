@@ -2,21 +2,16 @@
 
 namespace app\Application\machine;
 
-use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\coin\Set as CoinSet;
-use app\Ports\In\coin\SetFactory as CoinSetFactory;
-use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\NotEnoughCash;
 use app\Ports\In\product\Factory as ProductFactory;
+use app\Ports\In\stock\Factory as StockFactory;
 use app\Ports\In\stock\InsufficientStock;
 use app\Ports\In\stock\Stock as iStock;
-use app\Ports\In\product\SetFactory as ProductSetFactory;
-use app\Ports\In\stock\Factory as StockFactory;
-use app\Ports\Out\Input as iInput;
-use app\Ports\Out\InputFactory;
-use app\UI\machine\View;
+use app\Ports\Out\input\Input as iInput;
+use app\Ports\Out\view\Factory as ViewFactory;
 
 class Machine {
 
@@ -33,26 +28,32 @@ class Machine {
     private iStock $soda;
     private iStock $water;
     private ProductFactory $productFactory;
+    private ViewFactory $viewFactory;
 
-    public function __construct() {
-        $this->buyService = $this->getBuyService();
-        $this->coinFactory = new CoinFactory();
-        $this->input = (new InputFactory())->getKeyboardString();
-        $this->productFactory = new ProductFactory();
-        $this->insertedCoinSet = (new CoinSetFactory())->createEmpty();
-        $this->buildProductStocks(new StockFactory(new ProductSetFactory()), $this->productFactory);
+    public function __construct(
+        iBuyService    $buyService,
+        CoinFactory    $coinFactory,
+        iInput         $input,
+        ProductFactory $productFactory,
+        CoinSet        $insertedCoinSet,
+        StockFactory   $stockFactory,
+        ViewFactory    $viewFactory
+    ) {
+        $this->buyService = $buyService;
+        $this->coinFactory = $coinFactory;
+        $this->input = $input;
+        $this->productFactory = $productFactory;
+        $this->insertedCoinSet = $insertedCoinSet;
+        $this->viewFactory = $viewFactory;
+        $this->buildProductStocks($stockFactory, $this->productFactory);
         $this->refillStocks();
     }
 
     public function run(): void {
         while (true) {
-            echo $this->getView()->render();
+            echo $this->viewFactory->getMain($this->insertedCoinSet, $this->juice, $this->soda, $this->water)->render();
             $this->processInput($this->input);
         }
-    }
-
-    public function getView(): View {
-        return new View($this->insertedCoinSet, $this->juice, $this->soda, $this->water);
     }
 
     private function processInput(iInput $input): void {
@@ -96,13 +97,6 @@ class Machine {
         } catch (NotEnoughCash|InsufficientStock $exception) {
             echo $exception->getMessage() . PHP_EOL;
         }
-    }
-
-    private function getBuyService(): iBuyService {
-        $changeStrategyFactory = new ChangeFactory();
-        $changeStrategy = $changeStrategyFactory->getKeepAll();
-        $buyServiceFactory = new BuyServiceFactory($changeStrategy);
-        return $buyServiceFactory->get();
     }
 
     private function buildProductStocks(StockFactory $stockFactory, ProductFactory $productFactory): void {
