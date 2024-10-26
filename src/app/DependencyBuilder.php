@@ -4,7 +4,6 @@ namespace app;
 
 use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
-use app\Ports\In\coin\Set as CoinSet;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\processor\Factory as ProcessorFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
