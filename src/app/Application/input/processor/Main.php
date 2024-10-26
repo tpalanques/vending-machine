@@ -22,7 +22,6 @@ class Main implements iProcessor {
     private iStock $water;
     private CoinFactory $coinFactory;
     private iBuyService $buyService;
-    private ?string $option;
 
     public function __construct(
         iInput      $input,
@@ -40,12 +39,11 @@ class Main implements iProcessor {
         $this->water = $water;
         $this->coinFactory = $coinFactory;
         $this->buyService = $buyService;
-        $this->option = null;
     }
 
     public function process(): void {
-        $this->option = $this->input->get();
-        switch ($this->option) {
+        $this->input->wait();
+        switch ($this->input->get()) {
             case "1":
                 $this->credit->add($this->coinFactory->getFiveCent());
                 return;
@@ -84,9 +82,8 @@ class Main implements iProcessor {
         return $this->credit;
     }
 
-    // TODO unit thest this method
     public function getOption(): string {
-        return $this->option;
+        return $this->input->get();
     }
 
     private function buy(iStock $stock): iCoinSet {

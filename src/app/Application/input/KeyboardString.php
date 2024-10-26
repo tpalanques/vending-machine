@@ -6,10 +6,19 @@ use app\Ports\Out\input\Input as iInput;
 
 class KeyboardString implements iInput {
 
-    public function get(): string {
+    private ?string $input;
+
+    public function __construct() {
+        $this->input = null;
+    }
+
+    public function wait(): void {
         $handle = fopen("php://stdin", "r");
-        $line = fgets($handle);
+        $this->input = fgets($handle);
         fclose($handle);
-        return $line;
+    }
+
+    public function get(): string {
+        return $this->input;
     }
 }
