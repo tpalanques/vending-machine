@@ -27,7 +27,6 @@ class Machine {
     private iStock $soda;
     private iStock $water;
     private ProductFactory $productFactory;
-    private ViewFactory $viewFactory;
     private InputProcessorFactory $inputProcessorFactory;
     private InteractiveViewFactory $interactiveViewFactory;
 
