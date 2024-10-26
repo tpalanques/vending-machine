@@ -11,6 +11,7 @@ use app\Ports\In\coin\Set as iCoinSet;
 use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\processor\Factory as ProcessorFactory;
+use app\Ports\In\processor\Processor as iProcessor;
 use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\In\product\SetFactory;
 use app\Ports\In\stock\Stock as iStock;
@@ -47,10 +48,7 @@ class MainTest extends TestCase {
         $this->setUnlimitedStocks();
         $sut = $this->buildProcessor($option);
         $sut->process();
-        $this->assertEquals($value, $sut->getCredit()->getValue());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
+        $this->checkFinalState($sut, $option, $value, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK);
     }
 
     public static function insertValue(): array {
@@ -70,10 +68,14 @@ class MainTest extends TestCase {
         $sut = $this->buildProcessor($option);
         $sut->process();
         // TODO: actually we should also check that the product is given
-        $this->assertEquals(self::UNLIMITED_STOCK - $juiceSold, $this->juice->get());
-        $this->assertEquals(self::UNLIMITED_STOCK - $sodaSold, $this->soda->get());
-        $this->assertEquals(self::UNLIMITED_STOCK - $waterSold, $this->water->get());
-        $this->assertEquals(0, $sut->getCredit()->getValue());
+        $this->checkFinalState(
+            $sut,
+            $option,
+            0,
+            self::UNLIMITED_STOCK - $juiceSold,
+            self::UNLIMITED_STOCK - $sodaSold,
+            self::UNLIMITED_STOCK - $waterSold
+        );
     }
 
     public static function productToBuyAndStockDecrease(): array {
@@ -89,10 +91,7 @@ class MainTest extends TestCase {
         $this->setUnlimitedStocks();
         $sut = $this->buildProcessor($option);
         $sut->process();
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
-        $this->assertEquals(0, $sut->getCredit()->getValue());
+        $this->checkFinalState($sut, $option, 0, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK);
     }
 
     #[DataProvider('productWontBuy')]
@@ -100,28 +99,34 @@ class MainTest extends TestCase {
         $this->insertedCoinSet->add($this->getUnlimitedCoin());
         $sut = $this->buildProcessor($option);
         $sut->process();
-        $this->assertEquals(0, $this->juice->get());
-        $this->assertEquals(0, $this->soda->get());
-        $this->assertEquals(0, $this->water->get());
-        $this->assertEquals(self::UNLIMITED_COIN_VALUE, $sut->getCredit()->getValue());
+        $this->checkFinalState($sut, $option, self::UNLIMITED_COIN_VALUE, 0, 0, 0);
     }
 
     public static function productWontBuy(): array {
         return [[5], [6], [7]];
     }
-/* FIXME: test needs to be disabled as it breaks phpUnitResults
-    public function testExit() {
-        $this->insertedCoinSet->add($this->getUnlimitedCoin());
-        $this->setUnlimitedStocks();
-        $sut = $this->buildProcessor(0);
-        $sut->process();
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
-        $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
-        $this->assertEquals(0, $sut->getCredit()->getValue());
+
+    /* FIXME: test needs to be disabled as it breaks phpUnitResults
+        public function testExit() {
+            $this->insertedCoinSet->add($this->getUnlimitedCoin());
+            $this->setUnlimitedStocks();
+            $sut = $this->buildProcessor(0);
+            $sut->process();
+            $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
+            $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
+            $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
+            $this->assertEquals(0, $sut->getCredit()->getValue());
+        }
+    */
+    private function checkFinalState(iProcessor $sut, string $option, float $credit, int $juiceStock, int $sodaStock, int $waterStock): void {
+        $this->assertEquals($credit, $sut->getCredit()->getValue());
+        $this->assertEquals($option, $sut->getOption());
+        $this->assertEquals($juiceStock, $this->juice->get());
+        $this->assertEquals($sodaStock, $this->soda->get());
+        $this->assertEquals($waterStock, $this->water->get());
     }
-*/
-    private function getInputMock(string $input) {
+
+    private function getInputMock(string $input): iInput {
         $mock = $this->createMock(iInput::class);
         $mock->method('get')->willReturn($input);
         return $mock;
@@ -148,7 +153,7 @@ class MainTest extends TestCase {
         $this->water->add(self::UNLIMITED_STOCK);
     }
 
-    private function buildProcessor(int $option) {
+    private function buildProcessor(int $option): iProcessor {
         return $this->processorFactory->getMain(
             $this->getInputMock($option),
             $this->insertedCoinSet,
