@@ -49,18 +49,19 @@ class Machine {
     }
 
     public function run(): void {
-        while (true) {
-            $interactiveView = $this->interactiveViewFactory->getMain(
-                $this->input,
-                $this->insertedCoinSet,
-                $this->juice,
-                $this->soda,
-                $this->water,
-                $this->coinFactory,
-                $this->buyService
-            );
+        $interactiveView = $this->interactiveViewFactory->getMain(
+            $this->input,
+            $this->insertedCoinSet,
+            $this->juice,
+            $this->soda,
+            $this->water,
+            $this->coinFactory,
+            $this->buyService
+        );
+        while ($interactiveView) {
             echo $interactiveView->getView()->render();
             $interactiveView->getProcessor()->process();
+            $interactiveView = $interactiveView->getNextInteractiveView();
         }
     }
 

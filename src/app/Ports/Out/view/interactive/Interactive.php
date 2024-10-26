@@ -10,4 +10,6 @@ interface Interactive {
 
     public function getProcessor(): iProcessor;
 
+    public function getNextInteractiveView(): ?Interactive;
+
 }

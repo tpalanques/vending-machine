@@ -23,4 +23,15 @@ class Main implements iInteractiveView {
     public function getView(): iConsole {
         return $this->view;
     }
+
+    public function getNextInteractiveView(): ?iInteractiveView {
+        switch ($this->getProcessor()->getOption()) {
+            default:
+                return $this;
+            case 8:
+                return $this;
+            case 0:
+                return null;
+        }
+    }
 }
