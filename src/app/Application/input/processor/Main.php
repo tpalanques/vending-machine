@@ -2,9 +2,8 @@
 
 namespace app\Application\input\processor;
 
-use app\Application\machine\BuyService;
 use app\Ports\In\coin\Factory as CoinFactory;
-use app\Ports\In\coin\Set as CoinSet;
+use app\Ports\In\coin\Set as iCoinSet;
 use app\Ports\In\processor\Processor as iProcessor;
 use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\NotEnoughCash;
@@ -17,16 +16,16 @@ class Main implements iProcessor {
     private const int AMOUNT = 1;
 
     private iInput $input;
-    private CoinSet $insertedCoinSet;
+    private iCoinSet $credit;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
     private CoinFactory $coinFactory;
-    private BuyService $buyService;
+    private iBuyService $buyService;
 
     public function __construct(
         iInput      $input,
-        CoinSet     $insertedCoinSet,
+        iCoinSet    $credit,
         iStock      $juice,
         iStock      $soda,
         iStock      $water,
@@ -34,7 +33,7 @@ class Main implements iProcessor {
         iBuyService $buyService
     ) {
         $this->input = $input;
-        $this->insertedCoinSet = $insertedCoinSet;
+        $this->credit = $credit;
         $this->juice = $juice;
         $this->soda = $soda;
         $this->water = $water;
@@ -45,30 +44,30 @@ class Main implements iProcessor {
     public function process(): void {
         switch ($this->input->get()) {
             case "1":
-                $this->insertedCoinSet->add($this->coinFactory->getFiveCent());
+                $this->credit->add($this->coinFactory->getFiveCent());
                 return;
             case "2":
-                $this->insertedCoinSet->add($this->coinFactory->getTenCent());
+                $this->credit->add($this->coinFactory->getTenCent());
                 return;
             case "3":
-                $this->insertedCoinSet->add($this->coinFactory->getQuarter());
+                $this->credit->add($this->coinFactory->getQuarter());
                 return;
             case "4":
-                $this->insertedCoinSet->add($this->coinFactory->getOne());
+                $this->credit->add($this->coinFactory->getOne());
                 return;
             case "5":
-                $this->buy($this->juice);
+                $this->credit = $this->buy($this->juice);
                 return;
             case "6":
-                $this->buy($this->soda);
+                $this->credit = $this->buy($this->soda);
                 return;
             case "7":
-                $this->buy($this->water);
+                $this->credit = $this->buy($this->water);
                 return;
             case "8":
                 return;
             case "0":
-                $refundedCoins = $this->insertedCoinSet->empty();
+                $refundedCoins = $this->credit->empty();
                 foreach ($refundedCoins as $coin) {
                     echo "Here's your: " . $coin->getValue() . " coin" . PHP_EOL;
                 }
@@ -78,12 +77,20 @@ class Main implements iProcessor {
         }
     }
 
-    private function buy(iStock $stock): void {
+    public function getCredit(): iCoinSet {
+        return $this->credit;
+    }
+
+    private function buy(iStock $stock): iCoinSet {
+        $initialCash = clone $this->credit;
         try {
-            $this->buyService->buy($stock->getProduct(), $this->insertedCoinSet);
+            $cashBack = $this->buyService->buy($stock->getProduct(), $this->credit);
             $stock->remove(self::AMOUNT);
+            echo "Here's your product! -> " . $stock->getProduct()->getName() . PHP_EOL;
+            return $cashBack;
         } catch (NotEnoughCash|InsufficientStock $exception) {
             echo $exception->getMessage() . PHP_EOL;
+            return $initialCash;
         }
     }
 }

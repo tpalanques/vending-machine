@@ -47,7 +47,7 @@ class MainTest extends TestCase {
         $this->setUnlimitedStocks();
         $sut = $this->buildProcessor($option);
         $sut->process();
-        $this->assertEquals($value, $this->insertedCoinSet->getValue());
+        $this->assertEquals($value, $sut->getCredit()->getValue());
         $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
         $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
         $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
@@ -73,7 +73,7 @@ class MainTest extends TestCase {
         $this->assertEquals(self::UNLIMITED_STOCK - $juiceSold, $this->juice->get());
         $this->assertEquals(self::UNLIMITED_STOCK - $sodaSold, $this->soda->get());
         $this->assertEquals(self::UNLIMITED_STOCK - $waterSold, $this->water->get());
-        $this->assertEquals(0, $this->insertedCoinSet->getValue());
+        $this->assertEquals(0, $sut->getCredit()->getValue());
     }
 
     public static function productToBuyAndStockDecrease(): array {
@@ -92,11 +92,10 @@ class MainTest extends TestCase {
         $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
         $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
         $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
-        $this->assertEquals(0, $this->insertedCoinSet->getValue());
+        $this->assertEquals(0, $sut->getCredit()->getValue());
     }
 
-    // TODO currently working on that test that fails
-    /*#[DataProvider('productWontBuy')]
+    #[DataProvider('productWontBuy')]
     public function testCantBuyNoStock(int $option): void {
         $this->insertedCoinSet->add($this->getUnlimitedCoin());
         $sut = $this->buildProcessor($option);
@@ -104,11 +103,22 @@ class MainTest extends TestCase {
         $this->assertEquals(0, $this->juice->get());
         $this->assertEquals(0, $this->soda->get());
         $this->assertEquals(0, $this->water->get());
-        $this->assertEquals(self::UNLIMITED_COIN_VALUE, $this->insertedCoinSet->getValue());
+        $this->assertEquals(self::UNLIMITED_COIN_VALUE, $sut->getCredit()->getValue());
     }
-*/
+
     public static function productWontBuy(): array {
         return [[5], [6], [7]];
+    }
+
+    public function testExit() {
+        $this->insertedCoinSet->add($this->getUnlimitedCoin());
+        $this->setUnlimitedStocks();
+        $sut = $this->buildProcessor(0);
+        $sut->process();
+        $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
+        $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
+        $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
+        $this->assertEquals(0, $sut->getCredit()->getValue());
     }
 
     private function getInputMock(string $input) {

@@ -20,7 +20,6 @@ class BuyService implements iBuyService {
         if ($product->getPrice() > $coins->getValue()) {
             throw new NotEnoughCash($product, $coins);
         }
-        echo "Here's your product! -> " . $product->getName() . PHP_EOL;
         return $this->changeService->get($coins, $product->getPrice());
     }
 }
