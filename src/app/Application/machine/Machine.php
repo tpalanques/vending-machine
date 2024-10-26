@@ -4,7 +4,6 @@ namespace app\Application\machine;
 
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\machine\BuyService as iBuyService;
-use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 
 class Machine {
@@ -22,7 +21,7 @@ class Machine {
         $this->coinFactory = $coinFactory;
         $this->interactiveViewFactory = $interactiveViewFactory;
         // TODO move refill stocks method as it doesn't have access to stocks
-        //$this->refillStocks();
+        $this->refillStocks();
     }
 
     public function run(): void {
