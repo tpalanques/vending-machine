@@ -21,11 +21,13 @@ class MainTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
+        $coinSetFactory = new CoinSetFactory();
         $factory = (new InteractiveViewFactory(
             $this->getProcessorFactoryMock(),
             $this->getViewFactoryMock(),
             $this->getInputMock(),
-            (new CoinSetFactory())->createEmpty(),
+            $coinSetFactory->createEmpty(),
+            $coinSetFactory->createEmpty(),
             $this->getStockMock(),
             $this->getStockMock(),
             $this->getStockMock(),

@@ -17,6 +17,7 @@ class Main implements iProcessor {
 
     private iInput $input;
     private iCoinSet $credit;
+    private iCoinSet $change;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
@@ -26,6 +27,7 @@ class Main implements iProcessor {
     public function __construct(
         iInput      $input,
         iCoinSet    $credit,
+        iCoinSet    $change,
         iStock      $juice,
         iStock      $soda,
         iStock      $water,
@@ -34,6 +36,7 @@ class Main implements iProcessor {
     ) {
         $this->input = $input;
         $this->credit = $credit;
+        $this->change = $change;
         $this->juice = $juice;
         $this->soda = $soda;
         $this->water = $water;
@@ -91,6 +94,10 @@ class Main implements iProcessor {
         try {
             $cashBack = $this->buyService->buy($stock->getProduct(), $this->credit);
             $stock->remove(self::AMOUNT);
+            // TODO: vaig per aqui, estic afegint els diners guanyats al stock de canvi
+            foreach ($initialCash->empty() as $coin) {
+                $this->change->add($coin);
+            }
             echo "Here's your product! -> " . $stock->getProduct()->getName() . PHP_EOL;
             return $cashBack;
         } catch (NotEnoughCash|InsufficientStock $exception) {

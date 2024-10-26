@@ -15,14 +15,15 @@ class Factory {
 
     public function getMain(
         iInput      $input,
-        CoinSet     $insertedCoinSet,
+        CoinSet     $credit,
+        CoinSet     $change,
         iStock      $juice,
         iStock      $soda,
         iStock      $water,
         CoinFactory $coinFactory,
         iBuyService $buyService
     ): iProcessor {
-        return new Main($input, $insertedCoinSet, $juice, $soda, $water, $coinFactory, $buyService);
+        return new Main($input, $credit, $change, $juice, $soda, $water, $coinFactory, $buyService);
     }
 
     public function getService(iInput $input, $juice, $soda, $water): iProcessor {

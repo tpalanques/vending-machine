@@ -19,16 +19,18 @@ use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 class DependencyBuilder {
 
     public function getInteractiveViewFactory(): InteractiveViewFactory {
-        $stockFactory = new StockFactory(new ProductSetFactory());
+        $coinSetFactory = new CoinSetFactory();
         $productFactory = new ProductFactory();
+        $stockFactory = new StockFactory(new ProductSetFactory());
         return new InteractiveViewFactory(
             new ProcessorFactory(),
             new ViewFactory(),
             (new InputFactory())->getKeyboardString(),
-            (new CoinSetFactory())->createEmpty(),
-            $this->buildStock($stockFactory, $productFactory->getJuice(),Config::STOCK['juice']),
-            $this->buildStock($stockFactory, $productFactory->getSoda(),Config::STOCK['soda']),
-            $this->buildStock($stockFactory, $productFactory->getWater(),Config::STOCK['water']),
+            $coinSetFactory->createEmpty(),
+            $coinSetFactory->createEmpty(),
+            $this->buildStock($stockFactory, $productFactory->getJuice(), Config::STOCK['juice']),
+            $this->buildStock($stockFactory, $productFactory->getSoda(), Config::STOCK['soda']),
+            $this->buildStock($stockFactory, $productFactory->getWater(), Config::STOCK['water']),
             new CoinFactory(),
             (new BuyServiceFactory((new ChangeFactory())->getKeepAll()))->get()
         );

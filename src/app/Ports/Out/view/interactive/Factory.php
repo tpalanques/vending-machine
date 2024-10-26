@@ -18,7 +18,8 @@ class Factory {
     private ProcessorFactory $processorFactory;
     private ViewFactory $viewFactory;
     private iInput $input;
-    private iCoinSet $insertedCoinSet;
+    private iCoinSet $credit;
+    private iCoinSet $change;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
@@ -29,7 +30,8 @@ class Factory {
         ProcessorFactory $processorFactory,
         ViewFactory      $viewFactory,
         iInput           $input,
-        iCoinSet         $insertedCoinSet,
+        iCoinSet         $credit,
+        iCoinSet         $change,
         iStock           $juice,
         iStock           $soda,
         iStock           $water,
@@ -39,7 +41,8 @@ class Factory {
         $this->processorFactory = $processorFactory;
         $this->viewFactory = $viewFactory;
         $this->input = $input;
-        $this->insertedCoinSet = $insertedCoinSet;
+        $this->credit = $credit;
+        $this->change = $change;
         $this->juice = $juice;
         $this->soda = $soda;
         $this->water = $water;
@@ -51,14 +54,15 @@ class Factory {
         return new Main(
             $this,
             $this->viewFactory->getMain(
-                $this->insertedCoinSet,
+                $this->credit,
                 $this->juice,
                 $this->soda,
                 $this->water
             ),
             $this->processorFactory->getMain(
                 $this->input,
-                $this->insertedCoinSet,
+                $this->credit,
+                $this->change,
                 $this->juice,
                 $this->soda,
                 $this->water,
