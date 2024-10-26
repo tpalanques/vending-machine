@@ -85,16 +85,20 @@ class Main implements iProcessor {
         return $this->credit;
     }
 
+    public function getChange(): iCoinSet {
+        return $this->change;
+    }
+
     public function getOption(): string {
         return $this->input->get();
     }
 
+    // TODO: avoid method that does 2 things
     private function buy(iStock $stock): iCoinSet {
         $initialCash = clone $this->credit;
         try {
             $cashBack = $this->buyService->buy($stock->getProduct(), $this->credit);
             $stock->remove(self::AMOUNT);
-            // TODO: vaig per aqui, estic afegint els diners guanyats al stock de canvi
             foreach ($initialCash->empty() as $coin) {
                 $this->change->add($coin);
             }

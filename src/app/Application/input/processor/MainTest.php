@@ -25,7 +25,6 @@ class MainTest extends TestCase {
     private const float UNLIMITED_COIN_VALUE = 99999999;
     private const int UNLIMITED_STOCK = 999;
 
-    private ProcessorFactory $processorFactory;
     private iCoinSet $credit;
     private iCoinSet $change;
     private iStock $juice;
@@ -41,7 +40,6 @@ class MainTest extends TestCase {
         $coinSetFactory = new CoinSetFactory();
         $this->credit = $coinSetFactory->createEmpty();
         $this->change = $coinSetFactory->createEmpty();
-        $this->processorFactory = new ProcessorFactory();
         $this->buyService = $this->getBuyService();
         $this->createStocks();
     }
@@ -154,7 +152,7 @@ class MainTest extends TestCase {
     }
 
     private function buildProcessor(int $option): iProcessor {
-        return $this->processorFactory->getMain(
+        $processorFactory = new ProcessorFactory(
             $this->getInputMock($option),
             $this->credit,
             $this->change,
@@ -164,6 +162,7 @@ class MainTest extends TestCase {
             $this->coinFactory,
             $this->buyService
         );
+        return $processorFactory->getMain();
     }
 
     private function getUnlimitedCoin(): iCoin {
