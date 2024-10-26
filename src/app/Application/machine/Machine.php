@@ -6,10 +6,6 @@ use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 
 class Machine {
 
-    private const int JUICE_STARTING_STOCK = 3;
-    private const int SODA_STARTING_STOCK = 5;
-    private const int WATER_STARTING_STOCK = 1;
-
     private InteractiveViewFactory $interactiveViewFactory;
 
     public function __construct(InteractiveViewFactory $interactiveViewFactory) {
