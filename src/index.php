@@ -17,7 +17,6 @@ class index {
             $dependencyBuilder->getBuyService(),
             $dependencyBuilder->getCoinFactory(),
             $dependencyBuilder->getProductFactory(),
-            $dependencyBuilder->getInsertedCoinSet(),
             $dependencyBuilder->getStockFactory(),
             $dependencyBuilder->getInteractiveViewFactory()
         );

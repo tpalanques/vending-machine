@@ -24,10 +24,10 @@ class MainTest extends TestCase {
         $factory = (new InteractiveViewFactory(
             $this->getProcessorFactoryMock(),
             $this->getViewFactoryMock(),
-            $this->getInputMock()
+            $this->getInputMock(),
+            (new CoinSetFactory())->createEmpty(),
         ));
         $this->sut = $factory->getMain(
-            (new CoinSetFactory())->createEmpty(),
             $this->getStockMock(),
             $this->getStockMock(),
             $this->getStockMock(),

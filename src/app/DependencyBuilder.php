@@ -33,12 +33,9 @@ class DependencyBuilder {
         return new InteractiveViewFactory(
             new ProcessorFactory(),
             new ViewFactory(),
-            (new InputFactory())->getKeyboardString()
+            (new InputFactory())->getKeyboardString(),
+            (new CoinSetFactory())->createEmpty()
         );
-    }
-
-    public function getInsertedCoinSet(): CoinSet {
-        return (new CoinSetFactory())->createEmpty();
     }
 
     public function getProductFactory(): ProductFactory {
