@@ -10,7 +10,6 @@ use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\In\stock\Factory as StockFactory;
 use app\Ports\In\stock\Stock as iStock;
 use app\Ports\Out\input\Input as iInput;
-use app\Ports\Out\view\Factory as ViewFactory;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 
 class Machine {
