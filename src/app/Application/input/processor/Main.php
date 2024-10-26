@@ -72,7 +72,7 @@ class Main implements iProcessor {
                 foreach ($refundedCoins as $coin) {
                     echo "Here's your: " . $coin->getValue() . " coin" . PHP_EOL;
                 }
-                exit;
+                return;
             default:
                 echo "Invalid option" . PHP_EOL;
         }

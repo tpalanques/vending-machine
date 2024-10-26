@@ -106,18 +106,15 @@ class MainTest extends TestCase {
         return [[5], [6], [7]];
     }
 
-    /* FIXME: test needs to be disabled as it breaks phpUnitResults
-        public function testExit() {
-            $this->insertedCoinSet->add($this->getUnlimitedCoin());
-            $this->setUnlimitedStocks();
-            $sut = $this->buildProcessor(0);
-            $sut->process();
-            $this->assertEquals(self::UNLIMITED_STOCK, $this->juice->get());
-            $this->assertEquals(self::UNLIMITED_STOCK, $this->soda->get());
-            $this->assertEquals(self::UNLIMITED_STOCK, $this->water->get());
-            $this->assertEquals(0, $sut->getCredit()->getValue());
-        }
-    */
+    public function testExit() {
+        $option = 0;
+        $this->insertedCoinSet->add($this->getUnlimitedCoin());
+        $this->setUnlimitedStocks();
+        $sut = $this->buildProcessor($option);
+        $sut->process();
+        $this->checkFinalState($sut, $option, 0, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK, self::UNLIMITED_STOCK);
+    }
+
     private function checkFinalState(iProcessor $sut, string $option, float $credit, int $juiceStock, int $sodaStock, int $waterStock): void {
         $this->assertEquals($credit, $sut->getCredit()->getValue());
         $this->assertEquals($option, $sut->getOption());
