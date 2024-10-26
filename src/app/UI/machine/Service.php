@@ -36,9 +36,13 @@ class Service implements iConsoleView {
 
     private function getMenu(): string {
         return "Please select an option:" . PHP_EOL .
-            "\t 1) Add juice stock (" . $this->juice->get() . ")" . PHP_EOL .
-            "\t 2) Add juice soda (" . $this->soda->get() . ")" . PHP_EOL .
-            "\t 3) Add juice water (" . $this->water->get() . ")" . PHP_EOL .
-            "\t 0) Leave" . PHP_EOL;
+            "\t 1) Insert 0.05 coin" . PHP_EOL .
+            "\t 2) Insert 0.10 coin" . PHP_EOL .
+            "\t 3) Insert 0.25 coin" . PHP_EOL .
+            "\t 4) Insert 1 coin" . PHP_EOL .
+            "\t 5) Add juice stock (" . $this->juice->get() . ")" . PHP_EOL .
+            "\t 6) Add juice soda (" . $this->soda->get() . ")" . PHP_EOL .
+            "\t 7) Add juice water (" . $this->water->get() . ")" . PHP_EOL .
+            "\t 0) Close system mode" . PHP_EOL;
     }
 }

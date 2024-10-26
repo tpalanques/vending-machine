@@ -4,7 +4,7 @@ namespace app\Ports\In\processor;
 
 use app\Application\input\processor\Service;
 use app\Ports\In\coin\Factory as CoinFactory;
-use app\Ports\In\coin\Set as CoinSet;
+use app\Ports\In\coin\Set as iCoinSet;
 use app\Ports\In\processor\Processor as iProcessor;
 use app\Application\input\processor\Main;
 use app\Ports\In\machine\BuyService as iBuyService;
@@ -13,8 +13,8 @@ use app\Ports\Out\input\Input as iInput;
 
 class Factory {
     private iInput $input;
-    private CoinSet $credit;
-    private CoinSet $change;
+    private iCoinSet $credit;
+    private iCoinSet $change;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
@@ -23,8 +23,8 @@ class Factory {
 
     public function __construct(
         iInput      $input,
-        CoinSet     $credit,
-        CoinSet     $change,
+        iCoinSet    $credit,
+        iCoinSet    $change,
         iStock      $juice,
         iStock      $soda,
         iStock      $water,
@@ -46,6 +46,6 @@ class Factory {
     }
 
     public function getService(): iProcessor {
-        return new Service($this->input, $this->juice, $this->soda, $this->water);
+        return new Service($this->input, $this->change, $this->juice, $this->soda, $this->water, $this->coinFactory);
     }
 }
