@@ -71,8 +71,8 @@ class Factory {
     public function getService(): iInteractive {
         return new Service(
             $this,
-            $this->viewFactory->getService(),
-            $this->processorFactory->getService($this->input)
+            $this->viewFactory->getService($this->juice, $this->soda, $this->water),
+            $this->processorFactory->getService($this->input, $this->juice, $this->soda, $this->water)
         );
     }
 
