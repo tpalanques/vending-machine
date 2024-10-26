@@ -25,8 +25,8 @@ class MainTest extends TestCase {
     private const float UNLIMITED_COIN_VALUE = 99999999;
     private const int UNLIMITED_STOCK = 999;
 
-    private ProcessorFactory $processorFactory;
-    private iCoinSet $insertedCoinSet;
+    private iCoinSet $credit;
+    private iCoinSet $change;
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
@@ -37,8 +37,9 @@ class MainTest extends TestCase {
     protected function setUp(): void {
         parent::setUp();
         $this->coinFactory = new CoinFactory();
-        $this->insertedCoinSet = (new CoinSetFactory())->createEmpty();
-        $this->processorFactory = new ProcessorFactory();
+        $coinSetFactory = new CoinSetFactory();
+        $this->credit = $coinSetFactory->createEmpty();
+        $this->change = $coinSetFactory->createEmpty();
         $this->buyService = $this->getBuyService();
         $this->createStocks();
     }
@@ -64,7 +65,7 @@ class MainTest extends TestCase {
     #[DataProvider('productToBuyAndStockDecrease')]
     public function testBuy(int $option, int $juiceSold, int $sodaSold, int $waterSold): void {
         $this->setUnlimitedStocks();
-        $this->insertedCoinSet->add($this->getUnlimitedCoin());
+        $this->credit->add($this->getUnlimitedCoin());
         $sut = $this->buildProcessor($option);
         $sut->process();
         // TODO: actually we should also check that the product is given
@@ -96,7 +97,7 @@ class MainTest extends TestCase {
 
     #[DataProvider('productWontBuy')]
     public function testCantBuyNoStock(int $option): void {
-        $this->insertedCoinSet->add($this->getUnlimitedCoin());
+        $this->credit->add($this->getUnlimitedCoin());
         $sut = $this->buildProcessor($option);
         $sut->process();
         $this->checkFinalState($sut, $option, self::UNLIMITED_COIN_VALUE, 0, 0, 0);
@@ -108,7 +109,7 @@ class MainTest extends TestCase {
 
     public function testExit() {
         $option = 0;
-        $this->insertedCoinSet->add($this->getUnlimitedCoin());
+        $this->credit->add($this->getUnlimitedCoin());
         $this->setUnlimitedStocks();
         $sut = $this->buildProcessor($option);
         $sut->process();
@@ -151,15 +152,17 @@ class MainTest extends TestCase {
     }
 
     private function buildProcessor(int $option): iProcessor {
-        return $this->processorFactory->getMain(
+        $processorFactory = new ProcessorFactory(
             $this->getInputMock($option),
-            $this->insertedCoinSet,
+            $this->credit,
+            $this->change,
             $this->juice,
             $this->soda,
             $this->water,
             $this->coinFactory,
             $this->buyService
         );
+        return $processorFactory->getMain();
     }
 
     private function getUnlimitedCoin(): iCoin {

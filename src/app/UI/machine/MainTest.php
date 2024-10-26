@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 class MainTest extends TestCase {
 
     private const float CREDIT = 2.4;
+    private const float CHANGE = 0;
     private const array FIRST_PRODUCT = [
         'name' => 'First item',
         'price' => 6.5,
@@ -31,16 +32,17 @@ class MainTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
-        $this->viewFactory = new ViewFactory();
-    }
-
-    public function testIndex() {
-        $sut = $this->viewFactory->getMain(
+        $this->viewFactory = new ViewFactory(
             $this->getCoinSetMock(self::CREDIT),
+            $this->getCoinSetMock(self::CHANGE),
             $this->buildProductStock(self::FIRST_PRODUCT),
             $this->buildProductStock(self::SECOND_PRODUCT),
             $this->buildProductStock(self::THIRD_PRODUCT)
         );
+    }
+
+    public function testRender() {
+        $sut = $this->viewFactory->getMain();
         $this->assertEquals("WELCOME TO THE VENDING MACHINE!								[Credit: 2.4 coins]
 Please select an option:
 	 1) Insert 0.05 coin
@@ -52,7 +54,7 @@ Please select an option:
 	 7) Buy Water ( 7 units left )
 	 8) Enter ADMIN mode
 	 0) Leave
-",$sut->render());
+", $sut->render());
     }
 
     private function buildProductStock(array $product): iStock {
