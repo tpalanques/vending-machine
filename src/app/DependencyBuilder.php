@@ -24,10 +24,6 @@ class DependencyBuilder {
         return $buyServiceFactory->get();
     }
 
-    public function getCoinFactory(): CoinFactory {
-        return new CoinFactory();
-    }
-
     public function getInteractiveViewFactory(): InteractiveViewFactory {
         $stockFactory = new StockFactory(new ProductSetFactory());
         $productFactory = new ProductFactory();
@@ -38,7 +34,8 @@ class DependencyBuilder {
             (new CoinSetFactory())->createEmpty(),
             $stockFactory->create($productFactory->getJuice()),
             $stockFactory->create($productFactory->getSoda()),
-            $stockFactory->create($productFactory->getWater())
+            $stockFactory->create($productFactory->getWater()),
+            new CoinFactory()
         );
     }
 }

@@ -15,7 +15,6 @@ class index {
         $dependencyBuilder = new DependencyBuilder();
         $machine = new Machine(
             $dependencyBuilder->getBuyService(),
-            $dependencyBuilder->getCoinFactory(),
             $dependencyBuilder->getInteractiveViewFactory()
         );
         $machine->run();

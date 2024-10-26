@@ -13,20 +13,17 @@ class Machine {
     private const int WATER_STARTING_STOCK = 1;
 
     private iBuyService $buyService;
-    private CoinFactory $coinFactory;
     private InteractiveViewFactory $interactiveViewFactory;
 
-    public function __construct(iBuyService $buyService, CoinFactory $coinFactory, InteractiveViewFactory $interactiveViewFactory) {
+    public function __construct(iBuyService $buyService, InteractiveViewFactory $interactiveViewFactory) {
         $this->buyService = $buyService;
-        $this->coinFactory = $coinFactory;
         $this->interactiveViewFactory = $interactiveViewFactory;
         // TODO move refill stocks method as it doesn't have access to stocks
-        $this->refillStocks();
+        //$this->refillStocks();
     }
 
     public function run(): void {
         $interactiveView = $this->interactiveViewFactory->getMain(
-            $this->coinFactory,
             $this->buyService
         );
         while ($interactiveView) {

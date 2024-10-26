@@ -22,6 +22,7 @@ class Factory {
     private iStock $juice;
     private iStock $soda;
     private iStock $water;
+    private CoinFactory $coinFactory;
 
     public function __construct(
         ProcessorFactory $processorFactory,
@@ -30,7 +31,8 @@ class Factory {
         iCoinSet         $insertedCoinSet,
         iStock           $juice,
         iStock           $soda,
-        iStock           $water
+        iStock           $water,
+        CoinFactory      $coinFactory
     ) {
         $this->processorFactory = $processorFactory;
         $this->viewFactory = $viewFactory;
@@ -39,10 +41,10 @@ class Factory {
         $this->juice = $juice;
         $this->soda = $soda;
         $this->water = $water;
+        $this->coinFactory = $coinFactory;
     }
 
     public function getMain(
-        CoinFactory $coinFactory,
         iBuyService $buyService
     ): iInteractive {
         return new Main(
@@ -59,7 +61,7 @@ class Factory {
                 $this->juice,
                 $this->soda,
                 $this->water,
-                $coinFactory,
+                $this->coinFactory,
                 $buyService
             )
         );
