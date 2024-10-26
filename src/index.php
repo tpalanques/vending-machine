@@ -16,7 +16,6 @@ class index {
         $machine = new Machine(
             $dependencyBuilder->getBuyService(),
             $dependencyBuilder->getCoinFactory(),
-            $dependencyBuilder->getInput(),
             $dependencyBuilder->getProductFactory(),
             $dependencyBuilder->getInsertedCoinSet(),
             $dependencyBuilder->getStockFactory(),

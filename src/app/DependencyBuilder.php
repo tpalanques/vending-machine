@@ -12,7 +12,6 @@ use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\In\product\SetFactory as ProductSetFactory;
 use app\Ports\In\stock\Factory as StockFactory;
-use app\Ports\Out\input\Input as iInput;
 use app\Ports\Out\input\InputFactory;
 use app\Ports\Out\view\Factory as ViewFactory;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
@@ -30,14 +29,11 @@ class DependencyBuilder {
         return new CoinFactory();
     }
 
-    public function getInput(): iInput {
-        return (new InputFactory())->getKeyboardString();
-    }
-
     public function getInteractiveViewFactory(): InteractiveViewFactory {
         return new InteractiveViewFactory(
             new ProcessorFactory(),
-            new ViewFactory()
+            new ViewFactory(),
+            (new InputFactory())->getKeyboardString()
         );
     }
 

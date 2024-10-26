@@ -33,8 +33,7 @@ class Main implements iInteractiveView {
             default:
                 return $this;
             case 8:
-                // TODO move iInput as dependency
-                return $this->interactiveViewFactory->getService(new KeyboardString());
+                return $this->interactiveViewFactory->getService();
             case 0:
                 return null;
         }

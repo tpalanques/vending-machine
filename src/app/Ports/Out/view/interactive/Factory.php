@@ -2,8 +2,7 @@
 
 namespace app\Ports\Out\view\interactive;
 
-use app\Domain\Entity\view\interactive\Main as MainInteractiveView;
-use app\Domain\Entity\view\interactive\Sercice as ServiceInteractiveView;
+use app\Domain\Entity\view\interactive\Main;
 use app\Domain\Entity\view\interactive\Service;
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\coin\Set as CoinSet;
@@ -18,14 +17,15 @@ class Factory {
 
     private ProcessorFactory $processorFactory;
     private ViewFactory $viewFactory;
+    private iInput $input;
 
-    public function __construct(ProcessorFactory $processorFactory, ViewFactory $viewFactory) {
+    public function __construct(ProcessorFactory $processorFactory, ViewFactory $viewFactory, iInput $input) {
         $this->processorFactory = $processorFactory;
         $this->viewFactory = $viewFactory;
+        $this->input = $input;
     }
 
     public function getMain(
-        iInput      $input,
         CoinSet     $insertedCoinSet,
         iStock      $juice,
         iStock      $soda,
@@ -33,18 +33,18 @@ class Factory {
         CoinFactory $coinFactory,
         iBuyService $buyService
     ): iInteractive {
-        return new MainInteractiveView(
+        return new Main(
             $this,
             $this->viewFactory->getMain($insertedCoinSet, $juice, $soda, $water),
-            $this->processorFactory->getMain($input, $insertedCoinSet, $juice, $soda, $water, $coinFactory, $buyService)
+            $this->processorFactory->getMain($this->input, $insertedCoinSet, $juice, $soda, $water, $coinFactory, $buyService)
         );
     }
 
-    public function getService(iInput $input): iInteractive {
+    public function getService(): iInteractive {
         return new Service(
             $this,
             $this->viewFactory->getService(),
-            $this->processorFactory->getService($input)
+            $this->processorFactory->getService($this->input)
         );
     }
 

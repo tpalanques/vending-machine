@@ -32,7 +32,6 @@ class Machine {
     public function __construct(
         iBuyService            $buyService,
         CoinFactory            $coinFactory,
-        iInput                 $input,
         ProductFactory         $productFactory,
         CoinSet                $insertedCoinSet,
         StockFactory           $stockFactory,
@@ -40,7 +39,6 @@ class Machine {
     ) {
         $this->buyService = $buyService;
         $this->coinFactory = $coinFactory;
-        $this->input = $input;
         $this->productFactory = $productFactory;
         $this->insertedCoinSet = $insertedCoinSet;
         $this->interactiveViewFactory = $interactiveViewFactory;
@@ -50,7 +48,6 @@ class Machine {
 
     public function run(): void {
         $interactiveView = $this->interactiveViewFactory->getMain(
-            $this->input,
             $this->insertedCoinSet,
             $this->juice,
             $this->soda,
