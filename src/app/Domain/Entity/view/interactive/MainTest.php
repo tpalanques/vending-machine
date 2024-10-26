@@ -26,11 +26,11 @@ class MainTest extends TestCase {
             $this->getViewFactoryMock(),
             $this->getInputMock(),
             (new CoinSetFactory())->createEmpty(),
+            $this->getStockMock(),
+            $this->getStockMock(),
+            $this->getStockMock(),
         ));
         $this->sut = $factory->getMain(
-            $this->getStockMock(),
-            $this->getStockMock(),
-            $this->getStockMock(),
             new CoinFactory(),
             $this->getBuyServiceMock()
         );

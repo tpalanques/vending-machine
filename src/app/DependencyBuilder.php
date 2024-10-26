@@ -29,19 +29,16 @@ class DependencyBuilder {
     }
 
     public function getInteractiveViewFactory(): InteractiveViewFactory {
+        $stockFactory = new StockFactory(new ProductSetFactory());
+        $productFactory = new ProductFactory();
         return new InteractiveViewFactory(
             new ProcessorFactory(),
             new ViewFactory(),
             (new InputFactory())->getKeyboardString(),
-            (new CoinSetFactory())->createEmpty()
+            (new CoinSetFactory())->createEmpty(),
+            $stockFactory->create($productFactory->getJuice()),
+            $stockFactory->create($productFactory->getSoda()),
+            $stockFactory->create($productFactory->getWater())
         );
-    }
-
-    public function getProductFactory(): ProductFactory {
-        return new ProductFactory();
-    }
-
-    public function getStockFactory(): StockFactory {
-        return new StockFactory(new ProductSetFactory());
     }
 }
