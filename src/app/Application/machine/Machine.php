@@ -2,8 +2,6 @@
 
 namespace app\Application\machine;
 
-use app\Ports\In\coin\Factory as CoinFactory;
-use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 
 class Machine {
@@ -12,20 +10,16 @@ class Machine {
     private const int SODA_STARTING_STOCK = 5;
     private const int WATER_STARTING_STOCK = 1;
 
-    private iBuyService $buyService;
     private InteractiveViewFactory $interactiveViewFactory;
 
-    public function __construct(iBuyService $buyService, InteractiveViewFactory $interactiveViewFactory) {
-        $this->buyService = $buyService;
+    public function __construct(InteractiveViewFactory $interactiveViewFactory) {
         $this->interactiveViewFactory = $interactiveViewFactory;
         // TODO move refill stocks method as it doesn't have access to stocks
         //$this->refillStocks();
     }
 
     public function run(): void {
-        $interactiveView = $this->interactiveViewFactory->getMain(
-            $this->buyService
-        );
+        $interactiveView = $this->interactiveViewFactory->getMain();
         while ($interactiveView) {
             echo $interactiveView->getView()->render();
             $interactiveView->getProcessor()->process();

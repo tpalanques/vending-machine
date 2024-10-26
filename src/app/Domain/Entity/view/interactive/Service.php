@@ -32,7 +32,6 @@ class Service implements iInteractiveView {
             default:
                 return $this;
             case 0:
-                // TODO: move main dependenecies so they can be handlet by interactiveViewFactory
                 return $this->interactiveViewFactory->getMain();
         }
     }

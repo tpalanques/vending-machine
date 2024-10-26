@@ -29,11 +29,10 @@ class MainTest extends TestCase {
             $this->getStockMock(),
             $this->getStockMock(),
             $this->getStockMock(),
-            new CoinFactory()
-        ));
-        $this->sut = $factory->getMain(
+            new CoinFactory(),
             $this->getBuyServiceMock()
-        );
+        ));
+        $this->sut = $factory->getMain();
     }
 
     public function testGetProcessor() {

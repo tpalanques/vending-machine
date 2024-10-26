@@ -6,7 +6,6 @@ use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\processor\Factory as ProcessorFactory;
-use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\product\Factory as ProductFactory;
 use app\Ports\In\product\SetFactory as ProductSetFactory;
@@ -16,13 +15,6 @@ use app\Ports\Out\view\Factory as ViewFactory;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 
 class DependencyBuilder {
-
-    public function getBuyService(): iBuyService {
-        $changeStrategyFactory = new ChangeFactory();
-        $changeStrategy = $changeStrategyFactory->getKeepAll();
-        $buyServiceFactory = new BuyServiceFactory($changeStrategy);
-        return $buyServiceFactory->get();
-    }
 
     public function getInteractiveViewFactory(): InteractiveViewFactory {
         $stockFactory = new StockFactory(new ProductSetFactory());
@@ -35,7 +27,8 @@ class DependencyBuilder {
             $stockFactory->create($productFactory->getJuice()),
             $stockFactory->create($productFactory->getSoda()),
             $stockFactory->create($productFactory->getWater()),
-            new CoinFactory()
+            new CoinFactory(),
+            (new BuyServiceFactory((new ChangeFactory())->getKeepAll()))->get()
         );
     }
 }
