@@ -3,9 +3,7 @@
 namespace app\Ports\In\stock;
 
 use app\Ports\In\product\Product as iProduct;
-use app\Ports\In\product\SingleTypedSet;
 use app\Ports\In\product\SetFactory;
-use app\Ports\In\product\SingleTypedSet as iSingleTypedSet;
 use app\Application\stock\Stock;
 use app\Application\stock\Stock as iStock;
 

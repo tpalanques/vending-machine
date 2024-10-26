@@ -14,13 +14,7 @@ class index {
     public function run(): void {
         $dependencyBuilder = new DependencyBuilder();
         $machine = new Machine(
-            $dependencyBuilder->getBuyService(),
-            $dependencyBuilder->getCoinFactory(),
-            $dependencyBuilder->getInput(),
-            $dependencyBuilder->getProductFactory(),
-            $dependencyBuilder->getInsertedCoinSet(),
-            $dependencyBuilder->getStockFactory(),
-            $dependencyBuilder->getViewFactory()
+            $dependencyBuilder->getInteractiveViewFactory()
         );
         $machine->run();
     }
