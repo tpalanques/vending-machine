@@ -14,7 +14,7 @@ class Factory {
         return new Main($insertedCoinSet, $juice, $soda, $water);
     }
 
-    public function getService(): iConsole {
-        return new Service();
+    public function getService(Stock $juice, Stock $soda, Stock $water): iConsole {
+        return new Service($juice, $soda, $water);
     }
 }
