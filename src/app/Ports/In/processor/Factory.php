@@ -2,6 +2,7 @@
 
 namespace app\Ports\In\processor;
 
+use app\Application\input\processor\Service;
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\coin\Set as CoinSet;
 use app\Ports\In\processor\Processor as iProcessor;
@@ -22,5 +23,9 @@ class Factory {
         iBuyService $buyService
     ): iProcessor {
         return new Main($input, $insertedCoinSet, $juice, $soda, $water, $coinFactory, $buyService);
+    }
+
+    public function getService(iInput $input): iProcessor {
+        return new Service($input);
     }
 }

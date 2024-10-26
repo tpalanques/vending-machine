@@ -2,13 +2,12 @@
 
 namespace app\Domain\Entity\view\interactive;
 
-use app\Application\input\KeyboardString;
 use app\Ports\In\processor\Processor as iProcessor;
 use app\Ports\Out\view\Console as iConsole;
 use app\Ports\Out\view\interactive\Factory as InteractiveViewFactory;
 use app\Ports\Out\view\interactive\Interactive as iInteractiveView;
 
-class Main implements iInteractiveView {
+class Service implements iInteractiveView {
 
     private InteractiveViewFactory $interactiveViewFactory;
     private iConsole $view;
@@ -32,11 +31,9 @@ class Main implements iInteractiveView {
         switch ($this->getProcessor()->getOption()) {
             default:
                 return $this;
-            case 8:
-                // TODO move iInput as dependency
-                return $this->interactiveViewFactory->getService(new KeyboardString());
             case 0:
-                return null;
+                // TODO: move main dependenecies so they can be handlet by interactiveViewFactory
+                return $this->interactiveViewFactory->getMain();
         }
     }
 }
