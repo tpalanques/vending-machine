@@ -43,6 +43,6 @@ class Service implements iConsoleView {
             "\t 5) Add juice stock (" . $this->juice->get() . ")" . PHP_EOL .
             "\t 6) Add juice soda (" . $this->soda->get() . ")" . PHP_EOL .
             "\t 7) Add juice water (" . $this->water->get() . ")" . PHP_EOL .
-            "\t 0) Close system mode" . PHP_EOL;
+            "\t 0) Close service mode" . PHP_EOL;
     }
 }
