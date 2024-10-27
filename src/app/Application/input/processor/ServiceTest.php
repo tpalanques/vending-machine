@@ -5,6 +5,7 @@ namespace app\Application\input\processor;
 use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Coin as iCoin;
 use app\Ports\In\coin\Factory as CoinFactory;
+use app\Ports\In\coin\OrderServiceFactory;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\coin\ValueServiceFactory;
 use app\Ports\In\coin\Set as iCoinSet;
@@ -109,7 +110,9 @@ class ServiceTest extends TestCase {
     }
 
     private function getBuyService(): iBuyService {
-        $changeFactory = new ChangeFactory();
+        $coinSetFactory = new CoinSetFactory();
+        $orderService = (new OrderServiceFactory($coinSetFactory))->get();
+        $changeFactory = new ChangeFactory($orderService);
         $changeStrategy = $changeFactory->getKeepAll();
         $buyServiceFactory = new BuyServiceFactory($changeStrategy);
         return $buyServiceFactory->get();

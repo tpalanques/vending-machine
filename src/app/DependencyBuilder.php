@@ -4,7 +4,9 @@ namespace app;
 
 use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
+use app\Ports\In\coin\OrderServiceFactory;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
+use app\Ports\In\machine\BuyService as iBuyService;
 use app\Ports\In\processor\Factory as ProcessorFactory;
 use app\Ports\In\machine\BuyServiceFactory;
 use app\Ports\In\product\Factory as ProductFactory;
@@ -30,11 +32,18 @@ class DependencyBuilder {
         $juiceStock = $this->buildStock($stockFactory, $productFactory->getJuice(), Config::STOCK['juice']);
         $sodaStock = $this->buildStock($stockFactory, $productFactory->getSoda(), Config::STOCK['soda']);
         $waterStock = $this->buildStock($stockFactory, $productFactory->getWater(), Config::STOCK['water']);
-        $buyService = (new BuyServiceFactory((new ChangeFactory())->getKeepAll()))->get();
+        $buyService = $this->getBuyService($coinSetFactory);
         return new InteractiveViewFactory(
             new ProcessorFactory($input, $credit, $change, $juiceStock, $sodaStock, $waterStock, $coinFactory, $buyService),
             new ViewFactory($credit, $change, $juiceStock, $sodaStock, $waterStock)
         );
+    }
+
+    private function getBuyService(CoinSetFactory $coinSetFactory): iBuyService {
+        $orderService = (new OrderServiceFactory($coinSetFactory))->get();
+        $changeService = (new ChangeFactory($orderService))->getKeepAll();
+        $buyServiceFactory = new BuyServiceFactory($changeService);
+        return $buyServiceFactory->get();
     }
 
     private function getInput(): iInput {

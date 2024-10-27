@@ -4,9 +4,11 @@ namespace app\Application\change;
 
 use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\change\NotEnoughCash;
+use app\Ports\In\coin\OrderServiceFactory;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\coin\Factory as CoinFactory;
 use PHPUnit\Framework\TestCase;
+use app\Ports\In\change\Service as iService;
 
 class KeepAllTest extends TestCase {
 
@@ -15,13 +17,15 @@ class KeepAllTest extends TestCase {
 
     private CoinFactory $coinFactory;
     private CoinSetFactory $coinSetFactory;
-    private KeepAll $sut;
+    private iService $sut;
 
     protected function setUp(): void {
         parent::setUp();
         $this->coinSetFactory = new CoinSetFactory();
         $this->coinFactory = new CoinFactory();
-        $this->sut = (new ChangeFactory())->getKeepAll();
+        $orderService = (new OrderServiceFactory($this->coinSetFactory))->get();
+        $changeFactory = new ChangeFactory($orderService);
+        $this->sut = $changeFactory->getKeepAll();
     }
 
     public function testGetChange(): void {
