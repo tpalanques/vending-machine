@@ -59,6 +59,10 @@ class Service implements iProcessor {
         }
     }
 
+    public function getChange(): iCoinSet {
+        return $this->change;
+    }
+
     public function getOption(): string {
         return $this->input->get();
     }
