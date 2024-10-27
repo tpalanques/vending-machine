@@ -19,7 +19,7 @@ class OrderServiceService implements OrderService {
         if ($this->isOrderedFromHighestToLowest($set)) {
             return $set;
         }
-        $setArray = $set->getCoinsAsArray();
+        $setArray = $set->getAsArray();
         usort($setArray, function (iCoin $a, iCoin $b): int {
             if ($a->getValue() > $b->getValue()) {
                 return -1;
@@ -32,7 +32,7 @@ class OrderServiceService implements OrderService {
     }
 
     private function isOrderedFromHighestToLowest(Set $set): bool {
-        $coins = $set->getCoinsAsArray();
+        $coins = $set->getAsArray();
         if (sizeof($coins) === 0) {
             return true;
         }

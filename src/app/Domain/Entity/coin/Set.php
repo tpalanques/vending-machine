@@ -38,7 +38,7 @@ class Set implements iSet {
     }
 
     // TODO: missing unit test
-    public function getCoinsAsArray(): array {
+    public function getAsArray(): array {
         return $this->coins;
     }
 

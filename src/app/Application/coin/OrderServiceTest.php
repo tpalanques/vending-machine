@@ -31,8 +31,8 @@ class OrderServiceTest extends TestCase {
         }
         $orderedCoinSet = $this->sut->order($this->coinSet);
         $this->assertEquals(
-            $this->coinSet->getCoinsAsArray(),
-            $orderedCoinSet->getCoinsAsArray()
+            $this->coinSet->getAsArray(),
+            $orderedCoinSet->getAsArray()
         );
     }
 
@@ -54,9 +54,8 @@ class OrderServiceTest extends TestCase {
             $this->coinSet->add($coin);
         }
         $orderedCoinSet = $this->sut->order($this->coinSet);
-        $coinSetArray = $orderedCoinSet->getCoinsAsArray();
+        $coinSetArray = $orderedCoinSet->getAsArray();
         $lastValue = $coinSetArray[0]->getValue();
-        var_dump($coinSetArray);
         foreach ($coinSetArray as $coinSet) {
             $this->assertTrue($lastValue >= $coinSet->getValue());
             $lastValue = $coinSet->getValue();
