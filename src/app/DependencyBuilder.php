@@ -41,7 +41,7 @@ class DependencyBuilder {
 
     private function getBuyService(CoinSetFactory $coinSetFactory): iBuyService {
         $orderService = (new OrderServiceFactory($coinSetFactory))->get();
-        $changeService = (new ChangeFactory($orderService))->getKeepAll();
+        $changeService = (new ChangeFactory($orderService))->getSaveCredit();
         $buyServiceFactory = new BuyServiceFactory($changeService);
         return $buyServiceFactory->get();
     }
