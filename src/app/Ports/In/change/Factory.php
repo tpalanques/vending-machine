@@ -3,11 +3,16 @@
 namespace app\Ports\In\change;
 
 use app\Application\change\KeepAll;
-use app\Application\change\KeepAll as iService;
+use app\Ports\In\change\Service as iService;
+use app\Application\change\SaveCredit;
 
 class Factory {
 
-    public static function getKeepAll(): iService {
+    public function getKeepAll(): iService {
         return new KeepAll();
+    }
+
+    public function getSaveCredit(): iService {
+        return new SaveCredit();
     }
 }
