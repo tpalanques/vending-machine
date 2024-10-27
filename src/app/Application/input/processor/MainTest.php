@@ -5,6 +5,7 @@ namespace app\Application\input\processor;
 use app\Ports\In\change\Factory as ChangeFactory;
 use app\Ports\In\coin\Coin as iCoin;
 use app\Ports\In\coin\Factory as CoinFactory;
+use app\Ports\In\coin\OrderServiceFactory;
 use app\Ports\In\coin\SetFactory as CoinSetFactory;
 use app\Ports\In\coin\ValueServiceFactory;
 use app\Ports\In\coin\Set as iCoinSet;
@@ -31,15 +32,16 @@ class MainTest extends TestCase {
     private iStock $soda;
     private iStock $water;
     private CoinFactory $coinFactory;
+    private CoinSetFactory $coinSetFactory;
     private iBuyService $buyService;
     private ValueServiceFactory $valueServiceFactory;
 
     protected function setUp(): void {
         parent::setUp();
         $this->coinFactory = new CoinFactory();
-        $coinSetFactory = new CoinSetFactory();
-        $this->credit = $coinSetFactory->createEmpty();
-        $this->change = $coinSetFactory->createEmpty();
+        $this->coinSetFactory = new CoinSetFactory();
+        $this->credit = $this->coinSetFactory->createEmpty();
+        $this->change = $this->coinSetFactory->createEmpty();
         $this->buyService = $this->getBuyService();
         $this->createStocks();
     }
@@ -131,7 +133,8 @@ class MainTest extends TestCase {
     }
 
     private function getBuyService(): iBuyService {
-        $changeFactory = new ChangeFactory();
+        $orderService = (new OrderServiceFactory($this->coinSetFactory))->get();
+        $changeFactory = new ChangeFactory($orderService);
         $changeStrategy = $changeFactory->getKeepAll();
         $buyServiceFactory = new BuyServiceFactory($changeStrategy);
         return $buyServiceFactory->get();

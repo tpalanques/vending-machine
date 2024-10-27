@@ -2,6 +2,6 @@
 
 namespace app\Ports\In\coin;
 
-interface Value {
+interface ValueService {
     public function isSupported(float $value): bool;
 }

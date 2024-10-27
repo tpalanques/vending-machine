@@ -2,7 +2,7 @@
 
 namespace app\Application\coin;
 
-use app\Ports\In\coin\Value as iSupported;
+use app\Ports\In\coin\ValueService as iSupported;
 
 class ValueService implements iSupported {
 

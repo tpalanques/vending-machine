@@ -37,6 +37,11 @@ class Set implements iSet {
         return $coins;
     }
 
+    // TODO: missing unit test
+    public function getAsArray(): array {
+        return $this->coins;
+    }
+
     private function getPrecision(): int {
         return Config::COIN_PRECISION;
     }

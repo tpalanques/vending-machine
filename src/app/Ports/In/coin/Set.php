@@ -16,4 +16,6 @@ interface Set {
      */
     public function empty(): array;
 
+    public function getAsArray(): array;
+
 }
