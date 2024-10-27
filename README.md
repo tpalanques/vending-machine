@@ -9,7 +9,7 @@ from the scripts folder, so you'll probably need to go there before executing
 them:
 
 ```shell
-cd {holded-vending-machine}/system/scripts
+cd {vending-machine}/system/scripts
 ```
 
 ## 1.1 Docker start/stop/restart
@@ -47,7 +47,7 @@ Note this will get or update your json.lock file
 
 ## 1.4 Run test suite
 
-The project includes several unit tests, they can be run with the following script:
+The project includes almost 200 unit tests, they can be run with the following script:
 
 ```shell
 . test.sh run  
@@ -56,7 +56,7 @@ The project includes several unit tests, they can be run with the following scri
 
 ## 2.0 Root
 The `root` directory contains 3 main folders (further explained) and the docker-compose.yml
-Docker composition is not ment to be run directly with docker scripts but with the scripts 
+Docker composition is not meant to be run directly with docker scripts but with the scripts 
 contained in `system/scripts`
 
 ## 2.1 System
@@ -66,7 +66,8 @@ The `system` folder contains scripts and configuration files to build the entire
 The `storage` folder contains persistent data and shouldn't be deleted unless you want to remove your data
 
 ## 2.3 Src
-The `src` folder contains the working code (including tests) to run the project
+The `src` folder contains the working code (including tests) to run the project. It follows a typical
+hexagonal architecture. You'll find test cases side-by-side with productive code.
 
 # 3. Running the machine
 To get the machine working you'll need to build the docker machine previously (see point 1). Once the
