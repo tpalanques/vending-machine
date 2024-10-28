@@ -31,7 +31,7 @@ class BuyServiceTest extends TestCase {
     public function testBuy(): void {
         $product = $this->getProductMock();
         $coinSet = $this->getCoinSet(self::PRODUCT_PRICE + self::CHANGE);
-        $change = $this->sut->buy($product, $coinSet);
+        $change = $this->sut->buy($product, $coinSet, $this->coinSetFactory->createEmpty());
         $this->assertEquals(0, $change->getValue());
     }
 
@@ -39,7 +39,7 @@ class BuyServiceTest extends TestCase {
         $product = $this->getProductMock();
         $coinSet = $this->getCoinSet(self::PRODUCT_PRICE - self::CHANGE);
         $this->expectException(NotEnoughCash::class);
-        $change = $this->sut->buy($product, $coinSet);
+        $change = $this->sut->buy($product, $coinSet, $this->coinSetFactory->createEmpty());
     }
 
     private function getCoinSet(float $value): iCoinSet {

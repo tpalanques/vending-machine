@@ -9,7 +9,7 @@ setEnvironment
 
 function run() {
   cd $ROOT_PATH
-  runCommandInContainer "php vendor/phpunit/phpunit/phpunit app/" "$PHP_CONTAINER_NAME"
+  runCommandInContainer "php vendor/phpunit/phpunit/phpunit app" "$PHP_CONTAINER_NAME"
 }
 
 command=$1

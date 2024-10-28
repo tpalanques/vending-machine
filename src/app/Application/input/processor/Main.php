@@ -2,6 +2,7 @@
 
 namespace app\Application\input\processor;
 
+use app\Ports\In\change\NotEnoughChange;
 use app\Ports\In\coin\Factory as CoinFactory;
 use app\Ports\In\coin\Set as iCoinSet;
 use app\Ports\In\processor\Processor as iProcessor;
@@ -60,13 +61,13 @@ class Main implements iProcessor {
                 $this->credit->add($this->coinFactory->getOne());
                 return;
             case "5":
-                $this->credit = $this->buy($this->juice);
+                $this->buy($this->juice, $this->credit, $this->change);
                 return;
             case "6":
-                $this->credit = $this->buy($this->soda);
+                $this->buy($this->soda, $this->credit, $this->change);
                 return;
             case "7":
-                $this->credit = $this->buy($this->water);
+                $this->buy($this->water, $this->credit, $this->change);
                 return;
             case "8":
                 return;
@@ -93,20 +94,17 @@ class Main implements iProcessor {
         return $this->input->get();
     }
 
-    // TODO: avoid method that does 2 things
-    private function buy(iStock $stock): iCoinSet {
-        $initialCash = clone $this->credit;
+    private function buy(iStock $stock, iCoinSet $credit, iCoinSet $change) {
+        $initialCash = clone $credit;
         try {
-            $cashBack = $this->buyService->buy($stock->getProduct(), $this->credit);
+            $this->buyService->buy($stock->getProduct(), $credit, $change);
+            $credit->empty();
             $stock->remove(self::AMOUNT);
-            foreach ($initialCash->empty() as $coin) {
-                $this->change->add($coin);
-            }
+            //TODO: current change needs to be returned to user
             echo "Here's your product! -> " . $stock->getProduct()->getName() . PHP_EOL;
-            return $cashBack;
         } catch (NotEnoughCash|InsufficientStock $exception) {
             echo $exception->getMessage() . PHP_EOL;
-            return $initialCash;
+            $this->credit = clone $initialCash;
         }
     }
 }
