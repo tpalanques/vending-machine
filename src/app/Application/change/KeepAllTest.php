@@ -35,18 +35,6 @@ class KeepAllTest extends TestCase {
             $this->coinFactory->getTenCent(),
             $this->coinFactory->getFiveCent()
         );
-        $this->assertEquals(0, $this->sut->get($coinSet, self::PRICE)->getValue());
+        $this->assertEquals(0, $this->sut->get($coinSet, self::PRICE, $this->coinSetFactory->createEmpty())->getValue());
     }
-
-    public function testCantGetChange(): void {
-        $coinSet = $this->coinSetFactory->create(
-            $this->coinFactory->getOne(),
-            $this->coinFactory->getQuarter(),
-            $this->coinFactory->getTenCent(),
-            $this->coinFactory->getFiveCent()
-        );
-        $this->expectException(NotEnoughCash::class);
-        $this->sut->get($coinSet, self::WRONG_PRICE);
-    }
-
 }

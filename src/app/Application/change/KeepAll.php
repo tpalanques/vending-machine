@@ -7,11 +7,8 @@ use app\Ports\In\change\NotEnoughCash;
 use app\Ports\In\coin\Set as iCoinSet;
 
 class KeepAll implements iService {
-    public function get(iCoinSet $coins, float $price): iCoinSet {
-        if ($price > $coins->getValue()) {
-            throw new NotEnoughCash($coins, $price);
-        }
-        $coins->empty();
-        return $coins;
+    public function get(iCoinSet $credit, float $price, iCoinSet $change): iCoinSet {
+        $credit->empty();
+        return $credit;
     }
 }

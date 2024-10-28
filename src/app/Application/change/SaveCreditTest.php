@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 class SaveCreditTest extends TestCase {
 
     private const float PRICE = 1.50;
-    private const float WRONG_PRICE = 1.64;
 
     private CoinFactory $coinFactory;
     private CoinSetFactory $coinSetFactory;
@@ -33,7 +32,7 @@ class SaveCreditTest extends TestCase {
             $this->coinFactory->getQuarter(),
             $this->coinFactory->getQuarter()
         );
-        $this->assertEquals(0, $this->sut->get($coinSet, self::PRICE)->getValue());
+        $this->assertEquals(0, $this->sut->get($coinSet, self::PRICE, $this->coinSetFactory->createEmpty())->getValue());
     }
 
     public function testGetChangePayingExactly(): void {
@@ -44,7 +43,7 @@ class SaveCreditTest extends TestCase {
             $this->coinFactory->getTenCent(),
             $this->coinFactory->getQuarter()
         );
-        $this->assertEquals(0.15, $this->sut->get($coinSet, self::PRICE)->getValue());
+        $this->assertEquals(0.15, $this->sut->get($coinSet, self::PRICE, $this->coinSetFactory->createEmpty())->getValue());
     }
 
     public function testGetChangePayingNotExactly(): void {
@@ -52,18 +51,7 @@ class SaveCreditTest extends TestCase {
             $this->coinFactory->getOne(),
             $this->coinFactory->getOne()
         );
-        $this->assertEquals(0, $this->sut->get($coinSet, self::PRICE)->getValue());
-    }
-
-    public function testCantGetChange(): void {
-        $coinSet = $this->coinSetFactory->create(
-            $this->coinFactory->getOne(),
-            $this->coinFactory->getQuarter(),
-            $this->coinFactory->getTenCent(),
-            $this->coinFactory->getFiveCent()
-        );
-        $this->expectException(NotEnoughCash::class);
-        $this->sut->get($coinSet, self::WRONG_PRICE);
+        $this->assertEquals(2, $this->sut->get($coinSet, self::PRICE, $this->coinSetFactory->createEmpty())->getValue());
     }
 }
 

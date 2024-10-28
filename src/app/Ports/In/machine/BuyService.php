@@ -10,5 +10,5 @@ interface BuyService {
     /**
      * @throws NotEnoughCash
      */
-    public function buy(iProduct $product, iCoinSet $coins): iCoinSet;
+    public function buy(iProduct $product, iCoinSet $coins, iCoinSet $change): iCoinSet;
 }

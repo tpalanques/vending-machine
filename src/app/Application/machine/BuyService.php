@@ -16,10 +16,13 @@ class BuyService implements iBuyService {
         $this->changeService = $changeService;
     }
 
-    public function buy(iProduct $product, iCoinSet $coins): iCoinSet {
+    /**
+     * @throws NotEnoughCash
+     */
+    public function buy(iProduct $product, iCoinSet $coins, iCoinSet $change): iCoinSet {
         if ($product->getPrice() > $coins->getValue()) {
             throw new NotEnoughCash($product, $coins);
         }
-        return $this->changeService->get($coins, $product->getPrice());
+        return $this->changeService->get($coins, $product->getPrice(), $change);
     }
 }
